@@ -26,7 +26,7 @@
     "express-brute": "1.0.1",
     "express-brute-mongo": "1.0.0",
     "express-brute-mongoose": "1.1.0",
-    "express-fileupload": "1.1.1-alpha.1",
+    "express-fileupload": "1.1.10",
     "express-handlebars": "3.0.0",
     "express-session": "1.15.6",
     "express-validator": "^6.2.0",
