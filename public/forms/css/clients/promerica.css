@@ -1,0 +1,70 @@
+:root {
+    --mdc-theme-primary: #0d703a;
+    --mdc-theme-secondary: orange;
+ }
+
+label{
+	text-transform: uppercase;
+	font-size: 14px !important;
+	font-weight: bold !important;
+}
+
+label .light {
+	font-weight: normal !important;
+}
+
+.mdc-select__dropdown-icon{
+	background: url('../../../img/bg_select_prom.png') no-repeat !important;
+}
+.demo-cell p, label.inline,
+ .group textarea:focus ~ label:not(.error), 
+ .group textarea:valid ~ label:not(.error), 
+ .group input:focus ~ label:not(.error), 
+ .group input:valid ~ label:not(.error){
+ 	color: #0d703a;
+
+ }
+
+ .overflow-small{
+ 	font-size: 12px !important;
+ }
+
+ #comments{
+    display: inline-block;
+    margin-top: 20px;
+ }
+
+.mdc-select {
+    height: 43px !important;
+}
+
+.mdc-select__native-control {
+    height: 43px !important;
+    padding-top: 10px !important;
+}
+
+.inline {
+    display: block;
+    margin: 22px 0;
+}
+
+.demo-cell p .muted{
+	color: #aaa;
+}
+
+ body {
+ 	background-color: #e5e5e5; 	
+ }
+
+
+
+ input, 
+ textarea, 
+ select,  input:disabled:hover, 
+ textarea:disabled:hover,  input:disabled:focus, 
+ textarea:disabled:focus,  input:read-only:hover, 
+ textarea:read-only:hover,  input:read-only:focus, 
+ textarea:read-only:focus,  input:-webkit-autofill, 
+ textarea:-webkit-autofill,  select:-webkit-autofill {
+    background-color: #f2f2f2;
+}

@@ -1,0 +1,383 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+
+body{
+    background: #e9e9e9;
+    font-family: montserrat;
+}
+
+
+
+div.left-wrapper{
+    background: #fff;
+    box-shadow: 1px 1px 5px #ccc;
+    border-radius: 5px;
+    margin: 25px auto !important;
+    border-top: 4px solid #68A324;
+    width: 90%;
+    float: right;
+    min-height: 600px;
+}
+
+div.login-wrapper{
+    background: #fff;
+    box-shadow: 1px 1px 5px #ccc;
+    border-radius: 5px;
+    margin: 25px auto !important;
+    border-top: 4px solid #68A324;
+    width: 100%;
+    float: right;
+}
+
+.default header {
+    box-shadow: 2px -3px 8px #333;
+    background: #ffffff;
+    padding: 5px 0;
+}
+@font-face {
+    font-family: 'din_bold';
+        src: url('/fonts/din.woff2');
+    }
+.leform-element-html h3 {
+        text-transform: uppercase;
+        font-size: 28px;
+        font-family: 'din_bold';
+            margin-bottom: 50px;
+}
+.leform-element-html h3:before {
+content: '';
+display: block;
+width: 70px;
+height: 5px;
+border-bottom: 1px solid #68A324;
+position: absolute;
+bottom: 0;
+    margin-bottom: 15px;
+
+}
+.leform-element div.leform-input input[type='checkbox'].leform-checkbox-tgl:checked+label{
+background-color: #FFF !important;   
+}
+.leform-element div.leform-input input[type='checkbox'].leform-checkbox-tgl+label:after {
+background-color: #69a322 !important;
+}
+
+.leform-element div.leform-input input[type='text']:focus{
+outline: none !important;
+border-color: #69a322 !important;
+}
+
+ .leform-element label.leform-label {
+    font-size: 16px;
+    color: #a0a0a0;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: none;
+    text-align: left;
+}
+
+
+div.leform-cr-container-left div.leform-cr-label {
+    padding-left: .7em;
+    padding-top: 12px;
+}
+.leform-form .leform-element-label-left .leform-column-label ,
+.leform-cr-layout-2.leform-cr-layout-left div.leform-cr-container-right div.leform-cr-label{
+    padding-top: 12px;   
+}
+
+.leform-element label.leform-label {
+    font-size: 16px;
+    color: #a0a0a0 !important;
+    font-weight: normal !important;
+}    
+
+/*progressbar*/
+#progressbar {
+    margin-bottom: 30px;
+    overflow: hidden;
+    /*CSS counters to number the steps*/
+    counter-reset: step;
+    width:100%;
+    text-align: center;
+    padding-left: 0;
+  }
+  #progressbar li {
+    list-style-type: none;
+      color: rgb(51, 51, 51);
+    text-transform: uppercase;
+    font-size: 9px;
+    width: 20%;
+    float: left;
+    position: relative;
+  }
+  #progressbar li:before {
+    content: counter(step);
+    counter-increment: step;
+    width: 30px;
+    line-height: 30px;
+    display: block;
+    font-size: 12px;
+    color: #333;
+    background: white;
+    border-radius: 3px;
+    margin: 0 auto 5px auto;
+  }
+  /*progressbar connectors*/
+  #progressbar li:after {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: white;
+    position: absolute;
+    left: -50%;
+    top: 9px;
+    z-index: -1; /*put it behind the numbers*/
+  }
+  #progressbar li:first-child:after {
+    /*connector not needed before the first step*/
+    content: none; 
+  }
+  /*marking active/completed steps green*/
+  /*The number of the step and the connector before it = green*/
+  #progressbar li.active:before,  #progressbar li.active:after{
+    background: #68A324;
+    color: white;
+  }  
+
+  .stepper{
+    float: left;
+    width: 10%;
+    margin-top: 30px;
+}
+
+.steps i{
+    color: #d0cfcf;;
+    font-size: 32px
+}
+
+.steps {
+    text-align: center;
+    background: #f3f3f3;
+    padding: 13px;
+    border-bottom: 4px solid #ccc;
+}
+
+.steps.active{
+    background: #fff;
+}
+
+.steps.active i{
+    color: #68A324
+}
+
+.steps p{
+    font-size: 10px;
+    color: #d0cfcf;
+}
+
+.steps.active p{
+    color: #68A324
+}
+
+.sticky-wrapper{
+    display: inline;
+}
+
+#save-step{
+    display: none;
+    background: #e9e9e9;
+    border-color: #e9e9e9;
+}
+
+#save-step a{
+    text-decoration: none;
+    color: #333;
+}
+
+#save-step a i{
+    color: #333;
+    font-size: 48px
+}
+#save-step a p{
+    color: #333;
+}
+
+body .leform-collapsed .leform-col.leform-col-6 {
+    width: 50% !important
+}
+
+
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 667px) 
+  and (orientation: portrait) { 
+    #add-token,
+    #login-screen{
+        margin-top: 75px;
+      }
+
+    body .leform-collapsed .leform-col.leform-col-6 {
+        width: 100% !important
+    }
+    div.left-wrapper,    
+    div.content-wrapper{
+        width: 100%;
+    }
+    .stepper{
+        width: 100%;
+        margin-top: 65px;
+    }
+
+    header{
+        z-index: 9;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    .hide-sm{
+        display: none;
+    }
+    .guardar-wrapper,
+    .logo-wrapper{
+        float: left;
+        display: inline-block !important;
+        width: 50%;
+    }
+
+    .steps{
+        width: 43%;
+        float: left;
+    }
+
+}
+
+#add-token{
+    display: none;
+}
+
+.signature-pad {
+    width: 90% !important;
+}
+
+#loading {
+    position: relative;
+    left: 50%;
+    top: 50px;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    --webkit-pointer-events: none;
+    --moz-pointer-events: none;
+    max-width: 800px;
+    transform: translateX(-50%);
+    --webkit-transform: translateX(-50%);
+    --moz-transform: translateX(-50%);
+}
+#loading {
+    width: 750px;
+}
+
+#loading > [data-loader-role=logo] {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    width: 64px;
+    height: 64px;
+}
+
+#loading > [data-loader-role=header] {
+    position: absolute;
+    left: 84px;
+    top: 10px;
+    right: 10px;
+    height: 64px;
+}
+
+#loading > [data-loader-role=column-1] {
+    position: absolute;
+    left: 10px;
+    top: 86px;
+    width: 50%;
+    height: 400px;
+}
+
+#loading > [data-loader-role=column-2-field-1] {
+    position: absolute;
+    left: calc(50% + 20px);
+    top: 86px;
+    right: 10px;
+    height: 42px;
+}
+
+#loading > [data-loader-role=column-2-field-2] {
+    position: absolute;
+    left: calc(50% + 20px);
+    top: 138px;
+    right: 10px;
+    height: 42px;
+}
+
+#loading > [data-loader-role=column-2-field-3] {
+    position: absolute;
+    left: calc(50% + 20px);
+    top: 191px;
+    right: 10px;
+    height: 42px;
+}
+
+#loading > [data-loader-role=column-2-field-4] {
+    position: absolute;
+    left: calc(50% + 20px);
+    top: 244px;
+    right: 10px;
+    height: 42px;
+}
+
+#loading > [data-loader-role=column-2-field-5] {
+    position: absolute;
+    left: calc(50% + 20px);
+    top: 297px;
+    right: 10px;
+    height: 42px;
+}
+
+#loading > [data-loader-role=column-2-field-6] {
+    position: absolute;
+    left: calc(50% + 20px);
+    top: 350px;
+    right: 10px;
+    height: 136px;
+}
+
+#loading > [data-loader-role] {
+    background-color: #ddd;
+    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+    background-size: 100vw 100%;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: FormLoaderAnimation;
+    animation-timing-function: linear;
+    opacity: .5;
+}
+
+
+
+    
+    #form {opacity: initial; transition: opacity .3s; --webkit-transition: opacity .3s; --moz-transition: opacity .3s;}
+    
+
+    #loading {
+        pointer-events: none; --webkit-pointer-events: none; --moz-pointer-events: none;
+        max-width: 800px;
+        transform: translateX(-50%);
+        --webkit-transform: translateX(-50%);
+        --moz-transform: translateX(-50%);
+    }
+
+     #loading > [data-loader-role] { background-color: #ddd; background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%); background-size: 100vw 100%; animation-duration: 1s; animation-fill-mode: forwards; animation-iteration-count: infinite; animation-name: FormLoaderAnimation;  animation-timing-function: linear; opacity: .5; }
+    @keyframes FormLoaderAnimation { 0%{background-position: -468px 0 } 100%{background-position: 468px 0 } }
+    
+

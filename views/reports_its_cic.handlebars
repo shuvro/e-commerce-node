@@ -1,0 +1,155 @@
+<div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h4 class="text-themecolor">Reportes</h4>
+                    </div>
+                    <div class="col-md-7 align-self-center text-right">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                                <li class="breadcrumb-item active">Reportes</li>
+                            </ol>
+                            
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Info box -->
+                <!-- ============================================================== -->
+                <!-- Row -->
+                <div class="row">
+                    <!-- Column -->
+                    <div class="col-lg-6 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex flex-row">
+                                    <div class="round align-self-center round-success"><i class="ti-wallet"></i></div>
+                                    <div class="m-l-10 align-self-center">
+                                        <h3 class="m-b-0">{{initialInfo.reports.totalCompletados}}</h3>
+                                        <h5 class="text-muted m-b-0">Actualizados</h5></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                    <!-- Column -->
+                    <div class="col-lg-6 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex flex-row">
+                                    <div class="round align-self-center round-info"><i class="ti-user"></i></div>
+                                    <div class="m-l-10 align-self-center">
+                                        <h3 class="m-b-0">{{initialInfo.reports.totalPendientes}}</h3>
+                                        <h5 class="text-muted m-b-0">Pendientes</h5></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                    
+                    <!-- Column -->
+                </div>
+                <!-- Row -->
+                <!-- ============================================================== -->
+                <!-- End Info box -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Over Visitor, Our income , slaes different and  sales prediction -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <!-- Column -->
+                    <div class="col-lg-6 col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title ">Reporte de control cruzado</h5>
+                                <div id="morris-donut-chart" class="ecomm-donute" style="height: 317px;"></div>
+                                <ul class="list-inline m-t-30 text-center">
+                                    <li class="p-r-20">
+                                        <h5 class="text-muted"><i class="fa fa-circle" style="color: #fb9678;"></i> Completados</h5>
+                                        <h4 class="m-b-0">{{initialInfo.reports.totalCompletados}}</h4>
+                                    </li>
+                                    <li class="p-r-20">
+                                        <h5 class="text-muted"><i class="fa fa-circle" style="color: #01c0c8;"></i> Total</h5>
+                                        <h4 class="m-b-0">{{initialInfo.reports.totalEnviado}}</h4>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                    <div class="col-lg-6 col-md-12">
+                                         <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Formularios Pendientes</h5>
+                                                        <div class="col-md-12">
+                                                            <a href="/reports/its/cic/formpending">Ver Reporte <i class="fas fa-chevron-circle-right"></i></a>
+                                                            <br>
+                                                    </div>
+                                                </div>
+                                            </div>                
+                                            </div>
+                                        </div>
+
+                                         <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Formularios Completados</h5>
+                                                        <div class="col-md-12">
+                                                            <a href="/reports/its/cic/formfullfiled" >Ver Reporte <i class="fas fa-chevron-circle-right"></i></a>
+                                                            <br>
+                                                    </div>
+                                                </div>
+                                            </div>                
+                                            </div>
+                                        </div>
+
+                                         <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Todos las Transacciones</h5>
+                                                        <div class="col-md-12">
+                                                            <a href="/reports/its/cic/alltransac" >Ver Reporte <i class="fas fa-chevron-circle-right"></i></a>
+                                                            <br>
+                                                    </div>
+                                                </div>
+                                            </div>                
+                                            </div>
+                                        </div>
+                                        
+                        </div>
+
+                          
+                </div>
+                <!-- ============================================================== -->
+                <!-- Total Leads -->
+                <!-- ============================================================== -->
+                <!-- .row -->
+
+                <script>
+                    console.log('parseInt({{initialInfo.reports.totalCompletados}})',parseInt({{initialInfo.reports.totalCompletados}}))
+                    if ($("#morris-donut-chart").length > 0){
+                    // Morris donut chart
+                            
+                        Morris.Donut({
+                            element: 'morris-donut-chart',
+                            data: [{
+                                label: "Completados",
+                                value: parseInt({{initialInfo.reports.totalCompletados}}),
+
+                            }, {
+                                label: "Total",
+                                value: parseInt({{initialInfo.reports.totalEnviado}}),
+                            }],
+                            resize: true,
+                            colors:['#fb9678', '#01c0c8', '#4F5467']
+                        });
+                    }
+
+                </script>

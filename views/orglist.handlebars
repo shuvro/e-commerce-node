@@ -1,0 +1,187 @@
+<style>
+    .center-div {
+        width: 600px;
+        background: #fff;
+        margin: 50px auto;
+        padding: 20px;
+    }
+
+    .error {
+        color: red !important;
+    }
+
+    .table-actions {
+        font-size: 16px;
+        color: #333;
+        margin: 0 5px;
+    }
+</style>
+{{#if error}}
+    <div id="error" class="alert alert-danger" style="margin-top: 25px;">{{errMessage}}</div>
+{{/if}}
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">Lista de Organizaciones del sistema</h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Lista de organizaciones</li>
+            </ol>
+            {{#if permissions.organizations.hasCreate}}
+                <a href="/dashboard/organizations/create">
+                    <button type="button" class="btn btn-dark m-l-15"><i class="fa fa-plus-circle"></i>&nbsp;
+                        Crear Organización
+                    </button>
+                </a>
+            {{/if}}
+        </div>
+    </div>
+</div>
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Lista de organizaciones</h4>
+            <!-- <h6 class="card-subtitle">Add class <code>.color-table .dark-table</code></h6> -->
+            <div class="table-responsive">
+                <table class="table color-table dark-table table-datatable">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Creado por</th>
+                        <th>Fecha de registro</th>
+                        <th class="noExport">Options</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each initialInfo.orgList}}
+                        <tr>
+                            <td>{{id}}</td>
+                            <td>{{name}}</td>
+                            <td>{{email_primary}}</td>
+                            <td>{{phone}}</td>
+                            <td>{{createdBy}}</td>
+                            <td>{{parse_date createdAt}}</td>
+                            <td>
+                                {{#if ../permissions.organizations.hasCreate}}
+                                <a href="/dashboard/organizations/edit/{{id}}" class="table-actions"
+                                   data-toggle="tooltip" data-original-title="Editar "><i class="ti-marker-alt"></i>
+                                <a href="#" class="table-actions block" data-id="{{id}}" data-block-status="{{isBlocked}}" data-toggle="tooltip" data-original-title="Bloquear ">
+                                    {{#if isBlocked}}
+                                        <i class=" fas fa-lock" style="color: red" title="Quieres desbloquear este Organización?"></i>
+                                    {{else}}
+                                        <i class="fas fa-lock-open" title="Quieres bloquear este Organización?"></i>
+                                    {{/if}}
+                                {{/if}}
+                                {{#if ../permissions.organizations.hasDelete}}
+                                <a href="#" data-id="{{id}}" class="table-actions delete" data-toggle="tooltip"
+                                   data-original-title="Eliminar "><i class="ti-close"></i>
+                                {{/if}}
+                            </td>
+                        </tr>
+                    {{else}}
+                        <tr>
+                            <td colspan="5">No hay organizaciones para mostrar</td>
+                        </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('body').on('click', '.block', function (e) {
+        let organizationId = $(this).attr("data-id");
+        let isLocked = $(this).attr("data-block-status");
+        let lockStatus = 0;
+        let text = "";
+        if(isLocked == 0) {
+            lockStatus = 1;
+            text = "Quieres bloquear este Organización?";
+        } else {
+            lockStatus = 0;
+            text = "Quieres desbloquear este Organización?";
+        }
+        e.preventDefault();
+        Swal.fire({
+            title: text,
+            text: "Puede revertir el estado nuevamente más tarde.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si!',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    method: "post",
+                    url: "/dashboard/organizations/updateBlockStatus",
+                    data: {
+                        organizationId: organizationId,
+                        isBlocked: lockStatus,
+                    },
+                    success: function (data) {
+                        if (data.success === true) {
+                            toastr.success(data.message, function () {
+                                setTimeout(function () {
+                                    window.location.href = '/dashboard/organizations';
+                                }, 2000);
+                            });
+                        } else {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function (data) {
+                        toastr.error('Technical Error');
+                    }
+                });
+            }
+        })
+
+    });
+    $('body').on('click', '.delete', function (e) {
+        let organizationId = $(this).attr("data-id");
+        e.preventDefault();
+        Swal.fire({
+            title: "Deseas eliminar este Organización?",
+            text: "No puedes deshacer esta acción",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si!'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    method: "post",
+                    url: "/dashboard/organizations/delete",
+                    data: {
+                        organizationId: organizationId,
+                    },
+                    success: function (data) {
+                        if (data.success === true) {
+                            toastr.success(data.message, function () {
+                                setTimeout(function () {
+                                    window.location.href = '/dashboard/organizations';
+                                }, 2000);
+                            });
+                        } else {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function (data) {
+                        toastr.error('Technical Error');
+                    }
+                });
+            }
+        })
+
+    });
+</script>

@@ -1,0 +1,102 @@
+label.error{
+    margin-top: 35px;
+    font-size: 12px !important;
+    color: orangered !important;
+}
+
+
+.monto-alterado,
+.nota-credito-upload,
+.pedido-upload,
+.cheque-efectivo,
+.monto-parcial,
+#delete-row,
+.hide-field{
+	display: none;
+}
+#submit-form,
+#agregar-detalle{
+	width: 100%
+}
+
+.mdc-select{
+	height: 40px !important;
+}
+.mdc-select__native-control{
+	height: 40px !important;
+	padding-top: 10px !important;
+}
+.mdc-select__dropdown-icon{
+	bottom: 5px;
+}
+
+.input-next-to-select{
+	margin-top: 60px
+}
+
+input[type="file"] {
+  display: block;
+}
+.imageThumb {
+  height: 85px;
+    /*border: 2px solid;*/
+    /*padding: 1px;*/
+    cursor: pointer;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+}
+.pip {
+  display: inline-block;
+  border: 1px solid #ccc;
+  margin: 10px 10px 0 0;
+      width: 165px;
+}
+.remove {
+  display: block;
+  /*background: #444;*/
+  /*border: 1px solid black;*/
+  color: red !important	;
+  text-align: center;
+  cursor: pointer;
+}
+.remove:hover {
+  background: white;
+  color: black;
+}
+
+.default .content-transition{
+  margin: 0;
+}
+.edit-details{
+  display: inline-block;
+  background: #ffe389;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 4px #ccc;
+}
+.edit-details .content {
+  float: left;
+  width: 75%;
+}
+
+.edit-details .content-icon {
+  float: left;
+  width: 25%;
+}
+.edit-details .content-icon i {
+
+  margin: 5px 100px;
+  font-size: 80px;
+  color: #caa60c;
+
+}
+@media (max-width: 479px){
+  .onoffswitch{
+    margin-top: -20px;
+  }
+  .mdc-layout-grid__cell--span-3, .mdc-layout-grid__cell--span-3-phone {
+    width: auto;
+    grid-column-end: span 4;
+  }  
+}

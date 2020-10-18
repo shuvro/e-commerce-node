@@ -1,0 +1,78 @@
+<style >
+    .center-div{
+        width: 600px;
+        background: #fff;
+        margin: 50px auto;
+        padding: 20px;
+    }
+    .error{
+        color:red !important;
+    }
+</style>
+{{#if error}}
+    <div id="error" class="alert alert-danger" style="margin-top: 25px;">{{errMessage}}</div>
+{{/if}}
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">Actualizar Contraseña</h4>
+    </div>
+</div>
+<div class="row">
+
+    <div class="center-div">
+        <h3>Introduzca su nueva contraseña</h3>
+        <form method="post" action="/reset-password" id="changepwdform">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Contraseña</label>
+            <input type="password" class="form-control" name="password" id="password" />
+            <small id="passHelp" class="form-text text-muted">La contraseña debe ser mayor a 8 caracteres y menor a 15, contener una letra mayúscula y un número.</small>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Repita la contraseña</label>
+            <input type="password" class="form-control" id="repeat-password" />
+            <small id="repeatPassHelp" class="error form-text text-muted hide">Las contraseñas deben ser idénticas.</small>
+          </div>
+          <input type="hidden" name="resetToken" value="{{initialInfo.resetToken}}">
+          <input type="hidden" name="userId" value="{{initialInfo.userId}}">
+          <button type="submit" id="submit" class="btn btn-primary">Actualizar</button>
+        </form>
+    </div>
+
+</div>
+<script >
+    $(document).ready(function(){
+        $('#changepwdform').submit(function(e) {
+           
+            var err = false;
+            var pass = $('#password').val();
+            var rpass = $('#repeat-password').val();
+            var res = pass.match(/^(?=.*\d)(?=.*[A-Z])(?!.*[^a-zA-Z0-9@#$^+=])(.{8,15})$/);
+            
+            if(!res){
+                $('#passHelp').addClass('error');
+                err = true;
+                return false;
+            }else{
+                $('#passHelp').removeClass('error');
+            }
+
+            if(pass != rpass){
+                $('#repeatPassHelp').show();
+                err = true;
+                return false;
+            }else{
+                $('#repeatPassHelp').hide();
+            }
+
+            if(!err){
+                $('#changepwdform').submit();
+            }else{
+                 
+            }
+            return false;
+        });
+       
+
+
+    })
+</script>

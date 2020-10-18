@@ -1,0 +1,220 @@
+{{#if permissions.roles.hasView}}
+<style>
+    [type="checkbox"] {
+        vertical-align: middle;
+        margin-right: 10px;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        color: unset !important;
+    }
+</style>
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">
+            {{#if isEdit}}
+                Editar Roles
+            {{else}}
+                Crear Roles
+            {{/if}}
+        </h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/dashboard/roles">Lista de Roles</a></li>
+                <li class="breadcrumb-item active">
+                    {{#if isEdit}}
+                        Editar Roles
+                    {{else}}
+                        Crear Roles
+                    {{/if}}
+                </li>
+            </ol>
+
+        </div>
+    </div>
+</div>
+<div class="col-lg-8 offset-md-2">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">
+                {{#if isEdit}}
+                    Editar Roles
+                {{else}}
+                    Crear Roles
+                {{/if}}</h4>
+            <div class="form-horizontal form-material">
+                <div class="form-group">
+                    <label for="organization" class="control-label">Organization</label>
+                    <select class="form-control select2-dropdown" name="organization" id="organization" style="width: 100%">
+                        <option value="" selected></option>
+                        {{#each initialInfo.orgList}}
+                            <option value="{{id}}" {{isSelected id ../roleDetails.organization}}>{{name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="roleName" class="control-label">Role Name</label>
+                    <input type="text" class="form-control" name="roleName" id="roleName" required
+                           value="{{roleDetails.roleName}}">
+                </div>
+
+                <div class="form-group">
+                    <table class="table component-table">
+                        <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>HasView</th>
+                            <th>HasCreate</th>
+                            <th>HasDelete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+                {{#if isEdit}}
+                    <input type="hidden" name="roleId" id="roleId" value="{{roleDetails.id}}">
+                {{/if}}
+                {{#if permissions.roles.hasCreate}}
+                <button type="submit" class="btn btn-primary" id="btnSubmit">Submit</button>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#organization").change(function () {
+            $('.right .page-wrapper').removeAttr("data-select2-id");
+            $(".component-table tbody").empty();
+            let orgId = this.value;
+            $.ajax({
+                method: "post",
+                url: "/dashboard/getOrganizationComponents",
+                data: {
+                    organizationId: orgId,
+                    roleId: $("#roleId").val()
+                },
+                success: function (data) {
+                    if (data.components != "") {
+
+
+                        $.each(data.components, function (index, value) {
+                            let checkedValueView = "";
+                            let checkedValueCreate = "";
+                            let checkedValueDelete = "";
+                            if (value.hasView === 1) {
+                                checkedValueView = "checked";
+                            }
+                            if (value.hasCreate === 1) {
+                                checkedValueCreate = "checked";
+                            }
+                            if (value.hasDelete === 1) {
+                                checkedValueDelete = "checked";
+                            }
+                            {{#if isEdit}}
+                                $(".component-table tbody").append(
+                                        '<tr class="component-row" base-id="'+ value.id +'" component-id="' + value.componentId + '">' +
+                                        '<td>' + value.Component["name"] + '</td>' +
+                                        '<td>' + '<input type="checkbox" name="hasView"' + checkedValueView + '></td>' +
+                                        '<td>' + '<input type="checkbox" name="hasCreate" ' + checkedValueCreate + '></td>' +
+                                        '<td>' + '<input type="checkbox" name="hasDelete" ' + checkedValueDelete + '></td>' +
+                                        '</tr>'
+                                );
+                            {{else}}
+                                $(".component-table tbody").append(
+                                        '<tr class="component-row" component-id="' + value.componentId + '">' +
+                                        '<td>' + value.Component["name"] + '</td>' +
+                                        '<td>' + '<input type="checkbox" name="hasView"' + checkedValueView + '></td>' +
+                                        '<td>' + '<input type="checkbox" name="hasCreate" ' + checkedValueCreate + '></td>' +
+                                        '<td>' + '<input type="checkbox" name="hasDelete" ' + checkedValueDelete + '></td>' +
+                                        '</tr>'
+                                );
+                            {{/if}}
+                        });
+                        toastr.success('Components are loaded');
+                    } else {
+                        toastr.error('No components are available for this organization');
+                    }
+                },
+                error: function (data) {
+                    toastr.error('Technical Error');
+                }
+            });
+        });
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            $(this).prop('disabled', true);
+
+            let elementsData = [];
+            $('.component-row').each(function () {
+                    const componentId = $(this).attr('component-id');
+                    const baseId = $(this).attr('base-id');
+                    let itemData = {componentId: componentId};
+                    if(baseId) {
+                        itemData['id'] = baseId;
+                    }
+                    $(this).find('input').each(function () {
+                        const permissionName = $(this).attr("name");
+                        itemData[permissionName] = $(this).is(":checked");
+                    });
+                    elementsData.push(itemData);
+                }
+            );
+            $.ajax({
+                method: "{{method}}",
+                url: "/dashboard/roles/{{action}}",
+                data: {
+                    roleName: $("#roleName").val(),
+                    organization: $("#organization").val(),
+                    components: elementsData,
+                    roleId: $("#roleId").val()
+                },
+                success: function (data) {
+                    if (data.success === true) {
+                        toastr.success(data.message, function () {
+                            setTimeout(function () {
+                                window.location.href = '/dashboard/roles';
+                            }, 2000);
+                        });
+                    } else {
+                        if (data.errors && data.errors.length > 0) {
+                            let errors = data.errors;
+                            for (let i = 0; i < errors.length; i++) {
+                                toastr.error(errors[i].msg);
+                            }
+                        } else {
+                            toastr.error(data.message);
+                        }
+                        $('#btnSubmit').removeAttr('disabled');
+                    }
+                },
+                error: function (data) {
+                    toastr.error('Technical Error');
+                    $('#btnSubmit').removeAttr('disabled');
+                }
+            }).done(function () {
+                $('#btnSubmit').removeAttr('disabled');
+            }).fail(function () {
+                toastr.error('Request Failed');
+                $('#btnSubmit').removeAttr('disabled');
+            })
+
+        });
+        $(".select2-dropdown").select2({
+            placeholder: "Select Organizations to assign"
+        });
+        {{#if isEdit}}
+            let selectedOrganization = '{{roleDetails.organization}}';
+            if (selectedOrganization !== "") {
+                $("#organization").val(selectedOrganization).trigger("change");
+            }
+        {{/if}}
+    });
+</script>
+{{/if}}

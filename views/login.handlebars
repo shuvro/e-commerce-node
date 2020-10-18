@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/logo-caris.png">
+    <title>Caris</title>
+    
+    <!-- page css -->
+    <link href="dist/css/pages/login-register-lock.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="dist/css/style.min.css" rel="stylesheet">
+    
+    
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <div class="loader">
+            <div class="loader__figure"></div>
+            <p class="loader__label">Caris</p>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <section id="wrapper" class="login-register login-sidebar" style="background-image:url(/assets/images/background/login-register.jpg);">
+        <div class="login-box card">
+            <div class="card-body">
+                <form class="form-horizontal form-material text-center" style="margin-top: 150px" method="post" id="loginform" action="/dashboard/login">
+                    <a href="javascript:void(0)" class="db"><img src="/img/hubex-logo-transparente.png" width="125" alt="Home" /><br/><span class="logo-text"></span></a>
+
+                    {{#if hasError}}
+                    <div id="error" class="alert alert-danger" style="margin-top: 25px;">{{errMessage}}</div>
+                    {{/if}}
+                    {{#if hasSuccess}}
+                        <div id="success" class="alert alert-success" style="margin-top: 25px;">{{successMessage}}</div>
+                    {{/if}}
+                    <div class="form-group m-t-40">
+                        <div class="col-xs-12">
+                            <input class="form-control"  id="email" name="email" type="text" required="true" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input class="form-control" id="pass" name="password" type="password" required="true" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="d-flex no-block align-items-center">
+                                
+                                <div class="ml-auto">
+                                    <a href="javascript:void(0)" id="to-recover" class="text-muted"><i class="fas fa-lock m-r-5"></i> Olvidó su Password?</a> 
+                                </div>
+                            </div>   
+                        </div>
+                    </div>
+                    <div class="form-group text-center m-t-20">
+                        <div class="col-xs-12">
+                            <button  type="submit" id="sent" class="btn btn-info btn-lg btn-block text-uppercase btn-rounded" >Ingresar</button>
+                        </div>
+                    </div>
+                    
+                </form>
+                <form class="form-horizontal" method="post" id="recoverform" action="/forgot-password">
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <h3>Recuperar Password</h3>
+                            <p class="text-muted">Ingrese su email! </p>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <input class="form-control" type="email" name="email" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="form-group text-center m-t-20">
+                        <div class="col-xs-12">
+                            <button class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Resetear</button>
+                            <a href="#" class="btn text-uppercase waves-effect waves-light" id="cancelar">Cancelar</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="/assets/node_modules/popper/popper.min.js"></script>
+    <script src="/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!--Custom JavaScript -->
+    <script type="text/javascript">
+        $(function() {
+            $(".preloader").fadeOut();
+        });
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+        // ============================================================== 
+        // Login and Recover Password 
+        // ============================================================== 
+        $('#to-recover').on("click", function() {
+            $("#loginform").slideUp();
+            $("#recoverform").fadeIn();
+        });
+        $('#cancelar').on("click", function() {
+            $("#recoverform").slideDown().fadeOut();
+            $("#loginform").fadeIn();
+        });
+
+        // $('#sent').on("click", function(e) {
+        //     var user = $('#user').val();
+        //     var pass = $('#pass').val();
+        //     e.preventDefault();
+        //     if(user=='richard'&&pass=='demo'){
+        //         window.location.href="/dashboard"
+        //     }else{
+        //         $('#error').show();
+        //     }
+        // });
+    </script>
+    
+</body>
+
+</html>

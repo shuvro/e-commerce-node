@@ -1,0 +1,456 @@
+{{#if permissions.users.hasCreate}}
+    <style>
+        .center-div {
+            width: 600px;
+            background: #fff;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .error {
+            color: red !important;
+        }
+
+        .table-actions {
+            font-size: 16px;
+            color: #333;
+            margin: 0 5px;
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            color: unset !important;
+        }
+    </style>
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h4 class="text-themecolor">
+                {{#if isEdit}}
+                    Editar Usuario
+                {{else}}
+                    Crear Usuario
+                {{/if}}
+            </h4>
+        </div>
+        <div class="col-md-7 align-self-center text-right">
+            <div class="d-flex justify-content-end align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/dashboard/users">Lista de usuarios</a></li>
+                    <li class="breadcrumb-item active">
+                        {{#if isEdit}}
+                            Editar Usuario
+                        {{else}}
+                            Crear Usuario
+                        {{/if}}
+                    </li>
+                </ol>
+
+            </div>
+        </div>
+    </div>
+    {{#if error}}
+        <div class="col-lg-8 offset-md-2">
+            <div id="error" class="alert alert-danger" style="margin-top: 25px;">Usuario no encontrado</div>
+        </div>
+    {{else}}
+        <div class="row">
+            <!-- Column -->
+            <div class="col-lg-4 col-xlg-3 col-md-5">
+                <div class="card">
+                    <div class="card-body">
+                        <center class="m-t-30"><img
+                            {{#if isEdit}}
+                            src="{{imageUrl}}"
+                            {{else}}
+                            src="/img/default-user-image.png"
+                            {{/if}}
+                            class="profile-picture" id="profile-picture" width="150">
+                            <h4 class="card-title m-t-10">{{userInfo.name}} {{userInfo.lastname}} {{userInfo.secondlastname}}</h4>
+                            <h6 class="card-subtitle text-uppercase">{{assignedToOrg.name}}</h6>
+                            <input style="margin-left: 5rem" id="uploadProfilePicture" accept=".jpg,.png,.jpeg"
+                                   type="file" name="uploadProfilePicture">
+                        </center>
+                        {{#if isEdit}}
+                            <input type="hidden" name="image" id="image" value="{{userInfo.image}}">
+                        {{else}}
+                            <input type="hidden" name="image" id="image" value="">
+                        {{/if}}
+
+                    </div>
+                </div>
+            </div>
+            <!-- Column -->
+            <!-- Column -->
+            <div class="col-lg-8 col-xlg-9 col-md-7">
+                <div class="card">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs profile-tab" role="tablist">
+                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#profile" role="tab"
+                                                aria-selected="true">Perfil</a></li>
+                        {{#if isEdit}}
+                            <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#settings" role="tab"
+                                                    aria-selected="false">Cambiar contraseña</a></li>
+                        {{/if}}
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="profile" role="tabpanel">
+                            <div class="card-body">
+                                <div class="form-horizontal form-material">
+                                    <div class="form-group">
+                                        <label class="col-md-12">Organización</label>
+                                        <div class="col-md-6">
+                                            <select class="select2-dropdown" name="organizationId" style="width: 100%"
+                                                    id="organization">
+                                                <option value="" selected disabled>Seleccionar</option>
+                                                {{#each orgDetails}}
+                                                    <option value="{{id}}" {{isSelected id
+                                                                                        ../userInfo.organizationId}}>{{name}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-12">Forms</label>
+                                        <div class="col-md-6">
+                                            <select class="select2-dropdown" name="formIds" style="width: 100%"
+                                                    id="formIds" multiple="multiple"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-12">Nombre completo</label>
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <input type="text" placeholder="Nombre" class="form-control"
+                                                           id="name" name="name" value="{{userInfo.name}}"
+                                                           required>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="text" placeholder="Apellidos" class="form-control"
+                                                           id="lastname" name="lastname"
+                                                           value="{{userInfo.lastname}}" required>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input type="text" placeholder="Segundo Apellido"
+                                                           class="form-control" id="secondlastname"
+                                                           name="secondlastname"
+                                                           value="{{userInfo.secondlastname}}">
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="example-email" class="col-md-12">Email</label>
+                                        <div class="col-md-12">
+                                            <input type="text" class="form-control" id="email" name="email"
+                                                   value="{{userInfo.email}}"
+                                                   required>
+                                        </div>
+                                    </div>
+                                    {{#unless isEdit}}
+                                        <div class="form-group">
+                                            <label class="col-md-12">Contraseña</label>
+                                            <div class="col-md-12">
+                                                <input type="password" class="form-control" id="password"
+                                                       name="password"
+                                                       value="{{form.name}}" required>
+                                            </div>
+                                        </div>
+                                    {{/unless}}
+                                    <div class="form-group">
+                                        <label class="col-md-12"> Teléfono</label>
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <input type="text" placeholder="Teléfono"
+                                                           class="form-control numbers-only" minlength="8" maxlength="8"
+                                                           id="telephone"
+                                                           name="telephone" value="{{userInfo.telephone}}">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <input type="text" placeholder="Extensión"
+                                                           class="form-control numbers-only" maxlength="4"
+                                                           id="extension"
+                                                           name="extension" value="{{userInfo.extension}}">
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <input type="text" placeholder="Célular"
+                                                           class="form-control numbers-only" minlength="8" maxlength="8"
+                                                           id="cellular" name="cellular"
+                                                           value="{{userInfo.cellular}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-12">Rol</label>
+                                        <div class="col-md-6">
+                                            <select class="select2-dropdown" name="type" style="width: 100%" id="rol">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <button class="btn btn-success" id="btnSubmit">Guardar</button>
+                                        </div>
+                                    </div>
+                                    {{#if isEdit}}
+                                        <input type="hidden" name="userId" id="userId" value="{{userInfo.id}}">
+                                        <input type="hidden" name="loggedInUserId" id="loggedInUserId"
+                                               value="{{user.id}}">
+                                        <input type="hidden" id="formSelected" value="{{userInfo.formOwned}}">
+                                        <input type="hidden" id="selectedOrganization"
+                                               value="{{userInfo.organizationId}}">
+                                        <input type="hidden" name="carisOrgId" id="carisOrgId" value="{{carisOrgId}}">
+                                    {{/if}}
+                                    <input type="hidden" value="{{user.usertype}}" id="usertype">
+                                </div>
+                            </div>
+                        </div>
+                        {{#if isEdit}}
+                            <div class="tab-pane" id="settings" role="tabpanel">
+                                <div class="card-body">
+                                    <div class="form-horizontal form-material">
+                                        <div class="form-group">
+                                            <label class="col-md-12">Contraseña Actual</label>
+                                            <div class="col-md-8">
+                                                <input type="password" class="form-control" id="oldPassword"
+                                                       name="oldPassword" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-12">Contraseña Nueva</label>
+                                            <div class="col-md-8">
+                                                <input type="password" class="form-control" id="newPassword"
+                                                       name="newPassword" required>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-12">Confirmar Contraseña</label>
+                                            <div class="col-md-8">
+                                                <input type="password" class="form-control" id="confirmNewPassword"
+                                                       name="confirmNewPassword" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <button type="button" class="btn btn-success" id="updatePassword">
+                                                    Actualizar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+            <!-- Column -->
+        </div>
+    {{/if}}
+    </div>
+
+
+    <script type="text/javascript">
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.profile-picture').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $(document).ready(function () {
+            $(".select2-dropdown").select2({
+                placeholder: "Select Project"
+            });
+            $("#organization").change(function () {
+                let id = this.value;
+                let select = $('#rol');
+                let selectForms = $('#formIds');
+
+                $.ajax({
+                    url: "/api/roles/" + id, context: document.body, success: function (data) {
+                        select.empty();
+                        $.each(data.roles, function (index, value) {
+                            console.log(value.id);
+                            console.log({{userInfo.type}});
+                            if (value.id == '{{userInfo.type}}') {
+                                select.append("<option value='" + value.id + "' selected>" + value.roleName + "</option>");
+                            } else {
+                                select.append("<option value='" + value.id + "'>" + value.roleName + "</option>");
+                            }
+                            // select.append(
+                            //         $('<option></option>').val(value.id).html(value.roleName)
+                            // );
+                        });
+                        {{#if isEdit}}
+                            if ($("#loggedInUserId").val() == $("#userId").val()) {
+                                $('#rol').prop('disabled', true);
+                            }
+                        {{/if}}
+                    }
+                });
+
+                $.ajax({
+                    url: "/dashboard/users/getFormsByOrganizationId",
+                    method: "post",
+                    data: {
+                        orgId: id
+                    },
+                    success: function (data) {
+                        selectForms.empty();
+                        console.log(data);
+                        $.each(data.forms, function (index, value) {
+                            selectForms.append(
+                                    $('<option></option>').val(value.formId).html(value.name)
+                            );
+                        });
+                        {{#if isEdit}}
+                            if ($("#formSelected").val() !== '') {
+                                let selectedValues = $("#formSelected").val().split(',');
+                                $("#formIds").val(selectedValues).trigger("change");
+                            }
+                        {{/if}}
+                    }
+                });
+            });
+
+            {{#if isEdit}}
+
+                $(".btnPasswordBox").click(function (e) {
+                    $('.password-div').slideToggle("fast");
+                });
+                $("#updatePassword").click(function (e) {
+                    let oldPassword = $("#oldPassword").val();
+                    let newPassword = $("#newPassword").val();
+                    let confirmNewPassword = $("#confirmNewPassword").val();
+                    let userId = $("#userId").val();
+
+                    if (newPassword !== confirmNewPassword) {
+                        toastr.success("New password & Confirm Password doesn't match");
+                        $('#updatePassword').removeAttr('disabled');
+                        return;
+                    }
+                    e.preventDefault();
+                    $(this).prop('disabled', true);
+                    $.ajax({
+                        method: "{{method}}",
+                        url: "/dashboard/users/updatePassword",
+                        data: {
+                            oldPassword: oldPassword,
+                            newPassword: newPassword,
+                            userId: userId
+                        },
+                        success: function (data) {
+                            if (data.success === true) {
+                                toastr.success(data.message);
+                                $('#updatePassword').removeAttr('disabled');
+                            } else {
+                                toastr.error(data.message);
+                                $('#updatePassword').removeAttr('disabled');
+                            }
+                        },
+                        error: function (data) {
+                            toastr.error('Technical Error');
+                            $('#updatePassword').removeAttr('disabled');
+                        }
+                    });
+                });
+            {{/if}}
+
+            if ($("#usertype").val() !== 'carisadmin' || "{{userInfo.email}}" === "info@hubex.tech") {
+                $("#organization").val('{{org}}').trigger('change');
+                $('#organization').prop('disabled', true);
+            }
+
+            let organization =  $("#organization").val();
+            if(organization !== '') {
+                $("#organization").val(organization).trigger('change');
+            }
+
+            $("#btnSubmit").click(function (e) {
+                e.preventDefault();
+                $(this).prop('disabled', true);
+                $.ajax({
+                    method: "{{method}}",
+                    url: "/dashboard/users/{{action}}",
+                    data: {
+                        organizationId: $("#organization").val(),
+                        name: $("#name").val(),
+                        lastname: $("#lastname").val(),
+                        secondlastname: $("#secondlastname").val(),
+                        telephone: $("#telephone").val(),
+                        cellular: $("#cellular").val(),
+                        ext: $("#extension").val(),
+                        image: $("#image").val(),
+                        email: $("#email").val(),
+                        password: $("#password").val() ? $("#password").val() : "",
+                        type: $("#rol").val(),
+                        userId: $("#userId").val(),
+                        formIds: $("#formIds").val()
+                    },
+                    success: function (data) {
+                        if (data.success === true) {
+                            toastr.success(data.message, function () {
+                                setTimeout(function () {
+                                    window.location.href = '/dashboard/users';
+                                }, 2000);
+                            });
+                        } else {
+                            if (data.errors && data.errors.length > 0) {
+                                let errors = data.errors;
+                                for (let i = 0; i < errors.length; i++) {
+                                    toastr.error(errors[i].msg);
+                                }
+                            } else {
+                                toastr.error(data.message);
+                            }
+                            $('#btnSubmit').removeAttr('disabled');
+                        }
+                    },
+                    error: function (data) {
+                        toastr.error('Technical Error');
+                        $('#btnSubmit').removeAttr('disabled');
+                    }
+                });
+            });
+            $("#uploadProfilePicture").change(function () {
+                readURL(this);
+                let data = new FormData();
+                $.each($('#uploadProfilePicture')[0].files, function (i, file) {
+                    data.append('user', file);
+                });
+                $.ajax({
+                    url: '/dashboard/users/uploadProfilePicture',
+                    data: data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    method: 'POST',
+                    success: function (data) {
+                        if (data.success === true) {
+                            toastr.success(data.message, function () {
+                                console.log(data.files);
+                                if (data.files.filename != '') {
+                                    $("#image").val(data.files.filename);
+                                }
+                            });
+                        }
+                    }
+                });
+            })
+        });
+        $(document).on("input", ".numbers-only", function () {
+            this.value = this.value.replace(/\D/g, '');
+        });
+    </script>
+{{/if}}

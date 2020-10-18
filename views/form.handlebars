@@ -1,0 +1,352 @@
+{{#if permissions.forms.hasView}}
+    <style>
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            color: unset !important;
+        }
+    </style>
+    <link rel='stylesheet' href='https://unpkg.com/formiojs@latest/dist/formio.full.min.css'>
+    <script src='https://unpkg.com/formiojs@latest/dist/formio.full.min.js'></script>
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h4 class="text-themecolor">
+                {{#if isEdit}}
+                    Editar formulario de proyecto
+                {{else}}
+                    Crear formulario de proyecto
+                {{/if}}
+            </h4>
+        </div>
+        <div class="col-md-7 align-self-center text-right">
+            <div class="d-flex justify-content-end align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/dashboard/forms">Lista de Formularios</a></li>
+                    <li class="breadcrumb-item active">
+                        {{#if isEdit}}
+                            Editar formulario de proyecto
+                        {{else}}
+                            Crear formulario de proyecto
+                        {{/if}}
+                    </li>
+                </ol>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        Generador de formularios
+                    </h4>
+                    <div class="form-horizontal form-material" id="builder">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {{#if isEdit}}
+                            Editar formulario de proyecto
+                        {{else}}
+                            Crear formulario de proyecto
+                        {{/if}}
+                    </h5>
+                    <div class="form-horizontal form-material">
+                        <div class="form-group">
+                            <select class="form-control select2-dropdown" name="organization" id="organization"
+                                    style="width: 100%">
+                                <option value="" selected></option>
+                                {{#each initialInfo.orgList}}
+                                    <option value="{{id}}" {{isSelected id
+                                                                        ../projectFormDetails.organizationId}}>{{name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control select2-dropdown" name="projectId" style="width: 100%"
+                                    id="projectId"></select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="formName" id="formName"
+                                   placeholder="Form Name"
+                                   value="{{projectFormDetails.formName}}">
+                            <small class="control-label font-italic" id="nameAvailable"
+                                   style="font-weight: 400; color: darkgreen;display: none">
+                                Form name is available. &nbsp;<i class="fa fa-check" style="color: darkgreen"
+                                                                 aria-hidden="true"></i>
+                            </small>
+                            <small class="control-label font-italic" id="nameNotAvailable"
+                                   style="font-weight: 400; color: red;display: none">
+                                Form name is taken already. &nbsp;<i class="fa fa-times" style="color: red"
+                                                                     aria-hidden="true"></i>
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <!--                            <label class="form-control-label pb-1" style="font-weight: 400">Builder Type</label>-->
+                            <select class="form-control select2-dropdown" name="formBuilderType" style="width: 100%"
+                                    id="formBuilderType">
+                                <option value="form" {{isSelected projectFormDetails.formType "FORM"}}>Form</option>
+                                <option value="wizard" {{isSelected projectFormDetails.formType "WIZARD"}}>Wizard
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            {{#if isEdit}}
+                                <label class="control-label font-bold">Updated At :</label>
+                            {{else}}
+                                <label class="control-label font-bold">Created At :</label>
+                            {{/if}}
+
+                            <span type="text" class="form-control" id="createdAt"></span>
+                        </div>
+                        <div class="form-group">
+                            {{#if isEdit}}
+                                <label class="control-label font-bold">Updated By : </label>
+                            {{else}}
+                                <label class="control-label font-bold">Created By :</label>
+                            {{/if}}
+                            <span type="text" class="form-control text-lowercase" id="createdBy">{{user.email}}</span>
+                        </div>
+                        <input type="hidden" name="projectFormId" id="projectFormId"
+                               value="{{projectFormDetails.id}}">
+                        {{#if isEdit}}
+                            <input type="hidden" id="projectSelected" value="{{projectFormDetails.projectId}}">
+                        {{/if}}
+                        {{#if permissions.forms.hasCreate}}
+                            <button type="submit" class="btn btn-primary" id="btnSubmit">Submit</button>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8 offset-lg-2">
+                            <div class="form-horizontal form-material">
+                                <div class="form-group align-items-center">
+                                    {{#if permissions.forms.hasCreate}}
+                                        <button type="submit" class="btn btn-primary" id="btnSubmitForm">Save Generated
+                                            Form
+                                        </button>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                        <div id="json" style="display: none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            let dateNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
+            $("#createdAt").html(dateNow);
+
+            $('#formName').keyup(function () {
+                if (this.value.length >= 4) {
+                    $.ajax({
+                        method: "post",
+                        url: "/dashboard/forms/checkIfFormNameIsValid",
+                        data: {
+                            organizationId: $("#organization").val(),
+                            projectId: $("#projectId").val(),
+                            formName: $("#formName").val(),
+                        },
+                        success: function (data) {
+                            if (data.success === true) {
+                                $('#nameAvailable').css('display', '');
+                                $('#nameNotAvailable').css('display', 'none');
+                            } else {
+                                $('#nameNotAvailable').css('display', '');
+                                $('#nameAvailable').css('display', 'none');
+                            }
+                        },
+                        error: function (data) {
+                            toastr.error('Technical Error');
+                        }
+                    });
+                } else {
+                    $('#nameAvailable').css('display', 'none');
+                    $('#nameNotAvailable').css('display', 'none');
+                }
+            });
+
+            $("#btnSubmit").click(function (e) {
+                e.preventDefault();
+                $(this).prop('disabled', true);
+                let action = "{{action}}";
+                if ($("#projectFormId").val() != "") {
+                    action = "update";
+                }
+                $.ajax({
+                    method: "{{method}}",
+                    url: "/dashboard/forms/" + action,
+                    data: {
+                        organizationId: $("#organization").val(),
+                        projectId: $("#projectId").val(),
+                        formName: $("#formName").val(),
+                        projectFormId: $("#projectFormId").val(),
+                        formType: $("#formBuilderType").val()
+                    },
+                    success: function (data) {
+                        if (data.success === true) {
+                            toastr.success(data.message);
+                            {{#unless isEdit}}
+                                $("#projectFormId").val(data.result.id);
+                                if (data.result.id != "") {
+                                    new Formio.FormBuilder(document.getElementById("builder"), {
+                                        display: $("#formBuilderType").val(),
+                                        components: [],
+                                    });
+                                }
+                            {{/unless}}
+                        } else {
+                            if (data.errors && data.errors.length > 0) {
+                                let errors = data.errors;
+                                for (let i = 0; i < errors.length; i++) {
+                                    toastr.error(errors[i].msg);
+                                }
+                            } else {
+                                toastr.error(data.message);
+                            }
+                            $('#btnSubmit').removeAttr('disabled');
+                        }
+                    },
+                    error: function (data) {
+                        toastr.error('Technical Error');
+                        $('#btnSubmit').removeAttr('disabled');
+                    }
+                }).done(function () {
+                    $('#btnSubmit').removeAttr('disabled');
+                }).fail(function () {
+                    toastr.error('Request Failed');
+                    $('#btnSubmit').removeAttr('disabled');
+                })
+            });
+            $("#organization").select2({
+                placeholder: "Select Organization"
+            });
+            $("#projectId").select2({
+                placeholder: "Project List"
+            });
+            $("#formBuilderType").select2({
+                placeholder: "Select Builder"
+            });
+            $("#organization").change(function () {
+                let id = this.value;
+                let selectProject = $('#projectId');
+
+                $.ajax({
+                    url: "/dashboard/forms/getFormsByOrganizationId",
+                    method: "post",
+                    data: {
+                        orgId: id
+                    },
+                    success: function (data) {
+                        selectProject.empty();
+                        console.log(data);
+                        $.each(data.forms, function (index, value) {
+                            selectProject.append(
+                                    $('<option></option>').val(value.formId).html(value.name)
+                            );
+                        });
+                        {{#if isEdit}}
+                            if ($("#projectSelected").val() !== '') {
+                                $("#projectId").val($("#projectSelected").val()).trigger('change');
+                            }
+                        {{/if}}
+                    }
+                });
+            });
+            let organization = $("#organization").val();
+            if (organization !== '') {
+                $("#organization").val(organization).trigger('change');
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let builder;
+            let componentInstance = '{{generatedForm}}';
+            componentInstance =  JSON.parse(componentInstance.replace(/&quot;/g,'"'));
+            {{#if isEdit}}
+                builder = new Formio.FormBuilder(document.getElementById("builder"), {
+                    display: $("#formBuilderType").val(),
+                    components: componentInstance.components,
+                });
+            {{/if}}
+            let jsonElement = document.getElementById('json');
+            $("#formBuilderType").change(function () {
+                if ($("#projectFormId").val() != "") {
+                    builder = new Formio.FormBuilder(document.getElementById("builder"), {
+                        display: $("#formBuilderType").val(),
+                        components: [],
+                    });
+                }
+            });
+            let onBuild = function (build) {
+                jsonElement.innerHTML = '';
+                jsonElement.appendChild(document.createTextNode(JSON.stringify(builder.instance.schema, null, 4)));
+                console.log(builder.instance.schema);
+            };
+            let onReady = function () {
+                let jsonElement = document.getElementById('json');
+                builder.instance.on('saveComponent', onBuild);
+                builder.instance.on('editComponent', onBuild);
+            };
+            builder.instance.ready.then(onReady);
+
+            $("#btnSubmitForm").click(function (e) {
+                // alert(JSON.stringify(builder.instance.schema, null, 4));
+                e.preventDefault();
+                $(this).prop('disabled', true);
+                let projectFormId = $("#projectFormId").val();
+                let projectId = $("#projectId").val();
+                let jsonGenerated = builder.instance.schema;
+                if (projectFormId && projectId) {
+                    $.ajax({
+                        url: "/dashboard/forms/saveGeneratedProjectForm",
+                        method: "post",
+                        data: {
+                            projectId: projectId,
+                            projectFormId: projectFormId,
+                            jsonGenerated: jsonGenerated
+                        },
+                        success: function (data) {
+                            if (data.success === true) {
+                                toastr.success(data.message);
+                            } else {
+                                if (data.errors && data.errors.length > 0) {
+                                    let errors = data.errors;
+                                    for (let i = 0; i < errors.length; i++) {
+                                        toastr.error(errors[i].msg);
+                                    }
+                                } else {
+                                    toastr.error(data.message);
+                                }
+                                $('#btnSubmitForm').removeAttr('disabled');
+                            }
+                        },
+                        error: function (data) {
+                            toastr.error('Technical Error');
+                            $('#btnSubmitForm').removeAttr('disabled');
+                        }
+                    }).done(function () {
+                        $('#btnSubmitForm').removeAttr('disabled');
+                    }).fail(function () {
+                        toastr.error('Request Failed');
+                        $('#btnSubmitForm').removeAttr('disabled');
+                    });
+                } else {
+                    toastr.error('Please save the project first. Then save the generated form');
+                }
+            });
+        });
+    </script>
+{{/if}}

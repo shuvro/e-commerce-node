@@ -1,0 +1,629 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">Know Your Customer (Conozca Su Cliente) </h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                <li class="breadcrumb-item active">Revisar Solicitudes</li>
+            </ol>
+
+        </div>
+    </div>
+</div>
+<!-- <div class="row">
+    <div class="col-md-10"></div>
+    <div class="col-md-2">
+        Filtrar: 
+        <select>
+            <option>Todos</option>
+            <option>Pendientes</option>
+            <option>Aceptados</option>
+            <option>Rechazados</option>
+        </select>
+    </div>
+</div>
+<br clear="all"> -->
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<!-- .row -->
+<style type="text/css">
+    .form-wrapper {
+        padding: 20px;
+    }
+
+    .group input {
+        width: 100%;
+        margin-top: 30px;
+        padding: 5px;
+    }
+
+    select,
+    textarea {
+        width: 100%;
+    }
+
+    .group label {
+        top: -60px;
+        position: relative;
+        left: 0;
+    }
+
+    .btn-container {
+        margin-top: 15px;
+    }
+
+    .cc-container {
+        /*min-height: 550px;
+        height: 550px;*/
+        overflow: scroll;
+    }
+
+    .cc-list tr td {
+        text-transform: capitalize;
+        cursor: pointer;
+    }
+
+    .empty-form {
+        width: 100%;
+        /*display: flex;        */
+
+        text-align: center;
+    }
+
+    .loader-icon {
+        margin: 175px auto;
+        font-size: 42px;
+    }
+
+    .highlight {
+        background: #fff2a8 !important;
+    }
+
+    .mdc-layout-grid__cell--span-3 {
+        display: inline-block;
+        width: 25%;
+    }
+
+    #dynamic-signature {
+        width: 100%;
+    }
+
+    .reclaim-container {
+        margin-bottom: 30px;
+    }
+
+    .reclamo-container {
+        margin: 10px 0;
+    }
+
+    .legend {
+        text-align: center;
+        font-size: 10px;
+        color: #ccc;
+    }
+
+    .el-element-overlay .el-card-item .el-overlay-1 {
+        width: 100%;
+        height: 180px;
+        overflow: hidden;
+        position: relative;
+        text-align: center;
+        cursor: default;
+        background: #efefef;
+    }
+
+    #zoomImage {
+        width: 750px;
+        margin: auto;
+        
+    }
+
+    #zoomImage .modal-dialog {
+        max-width: 100%;
+        height: 550px;
+    }
+
+    #zoomImage .modal-dialog img {
+        width: 100%;
+    }
+
+    #zoomImage .modal-dialog #zoom-img {
+        height: 550px;
+    }
+
+    #contracargos-scrn .nav-link {
+        padding: 0.5rem 10px;
+    }
+
+    .hc {
+        margin: 10px 0;
+        border-top: 1px solid #e0e0e0;
+        padding-top: 15px;
+    }
+
+    .historyCreated {
+        font-weight: 600;
+    }
+
+    .revisions-container {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .revisions-container strong {
+        font-size: 15px;
+        margin-right: 10px;
+    }
+
+    .downloadIMG {
+        margin: 15px 0;
+    }
+
+
+
+.select-box {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  font-family: 'Open Sans', 'Helvetica Neue', 'Segoe UI', 'Calibri', 'Arial', sans-serif;
+  font-size: 14px;
+  color: #60666d;
+  margin-bottom: 30px;
+}
+
+.select-box__current {
+  position: relative;
+  box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  outline: none;
+}
+.select-box__current:focus + .select-box__list {
+  opacity: 1;
+  -webkit-animation-name: none;
+          animation-name: none;
+}
+.select-box__current:focus + .select-box__list .select-box__option {
+  cursor: pointer;
+}
+.select-box__current:focus .select-box__icon {
+  -webkit-transform: translateY(-50%) rotate(180deg);
+          transform: translateY(-50%) rotate(180deg);
+}
+.select-box__icon {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  width: 20px;
+  opacity: 0.3;
+  transition: 0.2s ease;
+}
+.select-box__value {
+  display: flex;
+}
+.select-box__input {
+  display: none;
+}
+.select-box__input:checked + .select-box__input-text {
+  display: block;
+}
+.select-box__input-text {
+  display: none;
+  width: 100%;
+  margin: 0;
+  padding: 15px;
+  background-color: #fff;
+}
+.select-box__list {
+  position: absolute;
+  width: 100%;
+  padding: 0;
+  list-style: none;
+  opacity: 0;
+  -webkit-animation-name: HideList;
+          animation-name: HideList;
+  -webkit-animation-duration: 0.5s;
+          animation-duration: 0.5s;
+  -webkit-animation-delay: 0.5s;
+          animation-delay: 0.5s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  -webkit-animation-timing-function: step-start;
+          animation-timing-function: step-start;
+  box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
+}
+.select-box__option {
+  display: block;
+  padding: 15px;
+  background-color: #fff;
+}
+.select-box__option:hover, .select-box__option:focus {
+  color: #546c84;
+  background-color: #fbfbfb;
+}
+
+@-webkit-keyframes HideList {
+  from {
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+  }
+  to {
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
+  }
+}
+
+@keyframes HideList {
+  from {
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+  }
+  to {
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
+  }
+}
+.select {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  border-bottom: 0px;
+  border-radius: 3px;
+  font-size: 12px;
+  box-shadow: 0px 1em 2em -1.5em rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 2px 3px -1.5px rgba(0, 0, 0, 0.5);
+margin-bottom: 30px;
+border: 1px solid #eee;
+}
+.select label {
+    margin-bottom: 0 !important;
+}
+.select > i.toggle {
+  position: absolute;
+  z-index: 4;
+  right: 1.5em;
+  top: 1.6em;
+  color: #ccc;
+}
+.select .title,
+.select .placeholder {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 1.5em 2em;
+  background: white;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+.select > input {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  cursor: pointer;
+}
+.select > input:checked ~ i.toggle.icon-arrow-down {
+  display: none;
+}
+.select > input:checked ~ i.toggle.icon-arrow-up {
+  display: block;
+}
+.select > input:checked div.options label.option .title {
+  display: none !important;
+}
+.select > input:not(:checked) {
+  z-index: 4;
+}
+.select > input:not(:checked) ~ label.option > span.title {
+  display: none;
+}
+.select > input:not(:checked) ~ i.toggle.icon-arrow-up {
+  display: none;
+}
+.select > input:not(:checked) ~ i.toggle.icon-arrow-down {
+  display: block;
+}
+.select > input:disabled {
+  cursor: no-drop;
+}
+.select > span.placeholder {
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+  width: 100%;
+  color: #999;
+  border-top: 0px;
+}
+.select label.option {
+  display: block;
+  overflow: hidden;
+  z-index: 1;
+  width: 100%;
+  transition: all 1s ease-out;
+}
+.select label.option span.title {
+  position: relative;
+  z-index: 2;
+  transition: background .3s ease-out;
+}
+.select label.option span.title i.icon {
+  padding-right: 8px;
+  color: #92a8d1;
+}
+.select label.option span.title:hover {
+  color: #000;
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0px 1px 0px rgba(0, 0, 0, 0.1);
+}
+.select label.option input {
+  display: none;
+}
+.select label.option input:checked ~ span.title {
+  position: absolute;
+  display: block;
+  z-index: 3;
+  top: 0px;
+  font-size: 12px;
+  background: #fff;
+  border-top: 0px;
+  box-shadow: none;
+  color: inherit;
+  width: 100%;
+}
+.select label.option input:disabled ~ span.title {
+  background: #f9f9f9 !important;
+  color: #aaa;
+}
+.select label.option input:disabled ~ span.title:hover {
+  color: #aaa;
+  background: none;
+  cursor: no-drop;
+}
+.hide{
+    display: none;
+}
+.cancel-edit-btn,
+.save-edit-btn,
+.edit-btn{
+    font-size: 12px;
+    float: right;
+    width: 155px;
+}
+
+.save-edit-btn{
+    margin-left: 10px;
+}
+
+input:disabled {
+    color: rgb(84, 84, 84);
+    cursor: default;
+    background: #f8f8f8;
+}
+</style>
+<div class="row" id="contracargos-scrn">
+    <!-- .col -->
+     <div class="col-md-3 col-lg-3 col-xlg-3 cc-container bg-options form-wrapper">
+        <div class="selector">
+            <div class="select animated zoomIn">
+                <!-- You can toggle select (disabled) -->
+                <input type="radio" name="option">
+                <i class="toggle icon icon-arrow-down"></i>
+                <i class="toggle icon icon-arrow-up"></i>
+                <span class="placeholder">Escoger...</span>
+                <label class="option">
+                    <input type="radio" id="opt-todos" name="option" class="selector-r" value="todos">
+                    <span class="title animated fadeIn">Todos</span>
+                </label>
+                <label class="option">
+                    <input type="radio" id="opt-pendientes" name="option" class="selector-r" value="pendientes">
+                    <span class="title animated fadeIn">Pendientes</span>
+                </label>
+                 <label class="option">
+                    <input type="radio" id="opt-esperando" name="option" class="selector-r" value="esperando">
+                    <span class="title animated fadeIn">En Revisión</span>
+                </label>
+                <label class="option">
+                    <input type="radio" id="opt-esperandoCliente" name="option" class="selector-r" value="esperandoCliente">
+                    <span class="title animated fadeIn">Esperando al Cliente</span>
+                </label>               
+                <label class="option">
+                    <input type="radio" id="opt-aprobados" name="option" class="selector-r" value="aprobados">
+                    <span class="title animated fadeIn">Aprobados</span>
+                </label>
+                <label class="option">
+                    <input type="radio" id="opt-rechazados" name="option" class="selector-r" value="rechazados" >
+                    <span class="title animated fadeIn" >Rechazados</span>
+                </label>
+                <label class="option">
+                    <input type="radio" id="opt-completados" name="option" class="selector-r" value="completados">
+                    <span class="title animated fadeIn" >Finalizados</span>
+                </label>
+            </div>
+        </div>
+
+
+        Listado de contracargos
+        <table class="table table-hover no-wrap cc-list">
+            <tbody>
+                {{#each initialInfo.formList}}
+                <tr class="form-option" data-id="{{_id}}" data-status="{{status}}">
+                    <td>
+                        <div>
+                            <strong><i class="ti-clipboard"></i> {{name}} {{lastname}} {{secondlastname}}</strong>                             
+                        </div>
+                        <div>
+                            <i class="ti-email"></i> Email: <strong>{{email}}</strong>
+                        </div>
+                        <div>
+                            <i class="ti-mobile"></i> Teléfono: <strong>{{phone}}</strong>
+                        </div>
+                        <div>
+                            <i class="ti-calendar"></i> Fecha de ingreso: <strong>{{parse_date timestamp}}</strong>
+                        </div>
+                        <div class="user-detail-sec">
+                            {{#if_eq status 'pending'}}
+                            <span class="badge badge-danger">Pendiente</span>
+                            {{/if_eq}}
+                        </div>
+                        {{!-- <span class="badge badge-secondary">New</span> --}}
+                    </td>
+                </tr>
+                {{else}}
+                <tr>
+                    <td>No hay opciones para mostrar</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6 col-lg-6 col-xlg-6 bg-light border-left cc-container form-wrapper" id="form-wrapper">
+        <div class="empty-form">Seleccionar un formulario</div>
+        <div id="loadedForm" class="form hide">
+            {{> projects/kyc/cs_step_1 isEdit=true}}
+            {{> projects/kyc/cs_step_2 isEdit=true}}
+        </div>
+    </div>
+    <div class="col-md-3 col-lg-3 col-xlg-3 border-left cc-container bg-options form-wrapper">
+
+        <div class="empty-form">Seleccionar un formulario</div>
+        <div class="options-content hide" id="loadedOptions">
+
+            <ul class="nav nav-tabs customtab" role="tablist">
+                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#home7" role="tab"
+                        aria-selected="true"><span class="hidden-sm-up">Opciones</span> </a> </li>
+                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#profile7" role="tab"
+                        aria-selected="false"><span class="hidden-sm-up">Adjuntos</i></span> </a> </li>
+                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#profile8" role="tab"
+                        aria-selected="false"><span class="hidden-sm-up">Historial</i></span> </a> </li>
+            </ul>
+            <div class="row btn-container">
+
+            </div>
+            <br>
+            <div class="tab-content">
+                <div class="tab-pane active show" id="home7" role="tabpanel">
+                    <div class="col-md-12">
+                        <input type="hidden" id="_currentForm">
+                        <div><strong>Status: </strong> <span id="formStatus"></span></div>
+                        <div><strong>Encargado: </strong> <span id="formOwner"></span></div>
+                        <br>
+                        <a href="#" id="assignContracargo"
+                            class="btn waves-effect waves-light btn-block btn-secondary">Asignar a mi</a>
+                        {{#if isAdmin}}
+                        <a href="#" id="generatePDF" class="getPDF btn waves-effect waves-light btn-block btn-secondary hide">Formulario a
+                            PDF</a>
+                        {{/if}}    
+                        <button type="button" id="aprobarCC" class=" btn btn-block btn-outline-primary">Aprobar</button>
+                        <button type="button" class="btn btn-block btn-outline-info" id="masInfo">Solicitar mas
+                            información</button>
+                        <button type="button" id="reject" class="btn waves-effect waves-light btn-block btn-danger">Rechazar</button>
+                        <!-- <button type="button" class="btn waves-effect waves-light btn-block btn-danger">Rechazar</button> -->
+                        {{#if isAdmin}}
+                        <button type="button" id="reopen" class="btn waves-effect waves-light btn-block btn-primary hide">Re Abrir</button>
+                        <button type="button" id="finish" class="btn waves-effect waves-light btn-block btn-success hide">Finalizar</button>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="tab-pane p-20" id="profile7" role="tabpanel">
+                    <div class="row btn-container">
+                        <div class="col-md-12">
+
+                            <br>
+                            <div id="signature-thumb">
+                                <a id="firma-attch" href="#"></a>
+                                <div class="legend">Firma del cliente</div>
+                                <div><strong>Fecha de la firma:</strong> <span id="signatur-date"></span></div>
+                            </div>
+                            <a href="#"
+                                class="downloadIMG btn waves-effect waves-light btn-block btn-secondary">Descargar todas
+                                las imagenes</a>
+
+                            <div id="other-attacheds" class="el-element-overlay">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane p-20" id="profile8" role="tabpanel">
+                    <div class="row btn-container">
+                        <div class="col-md-12">
+                            <h4>Historial de actualizaciones</h4>
+                            <div id="historialContainer" class="steamline m-t-40"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel1">Solicitar mas información</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <!-- <div class="form-group">
+                        <label for="recipient-name" class="control-label">Razón del rechazo:</label>
+                        <input type="text" class="form-control" id="recipient-name1">
+                    </div> -->
+                    <div class="form-group">
+                        <label for="message-text" class="control-label">Destinatario:</label>
+                        <input class="form-control" id="message-header" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <!-- <label for="message-text" class="control-label">:</label> -->
+                        <textarea class="form-control" id="message-text" rows="10"></textarea>
+                    </div>
+                    <div id="msg-footer"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" id="saveDetails" class="btn btn-primary">Enviar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="zoomImage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel1">Zoom de imagen</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <div id="zoom-img"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var status = "{{status}}";
+</script>
+<script type="text/javascript" src="/dashboard/kyc.js"></script>

@@ -1,0 +1,127 @@
+<style >
+    
+    .center-div{
+        width: 600px;
+        background: #fff;
+        margin: 50px auto;
+        padding: 20px;
+    }
+    .error{
+        color:red !important;
+    }
+
+    .table-actions{
+        font-size: 16px;
+        color: #333;
+        margin: 0 5px;
+    }
+    
+</style>
+{{#if error}}
+    <div id="error" class="alert alert-danger" style="margin-top: 25px;">{{errMessage}}</div>
+{{/if}}
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">Lista de Invitaciones</h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Lista de Invitaciones</li>
+            </ol>
+            <a href="/dashboard/uniqueUrls" class="btn btn-dark m-l-15" ><i class="fa fa-plus-circle"></i> Crear Invitación</a>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Lista de Invitaciones</h4>
+            <!-- <h6 class="card-subtitle">Add class <code>.color-table .dark-table</code></h6> -->
+            <div class="table-responsive">
+                <table class="table color-table dark-table table-datatable">
+                    <thead>
+                        <tr>                        
+                            <!-- <th>id</th> -->
+                            
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Cedula</th>
+                            <th>Email</th>
+                            <th>Fecha de invitación</th>
+                            <th>Activo?</th>
+                            <th>Código</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each invitations}}
+                            <tr>
+                                <!-- <td>{{organizationId}}</td> -->
+                                <td>{{name}}</td>
+                                <td>{{lastname}}</td>
+                                <td>{{idNumber}}</td>
+                                <td>{{email}}</td>
+                                <td>{{parse_date createdAt}}</td>   
+                                <td>{{isYesNo isActive}}</td>
+                                <td>{{requestId}}</td>
+                                <td>
+                                    <a href="/dashboard/invitation/{{id}}" class="table-actions" data-toggle="tooltip" data-original-title="Ver Detalles ">
+                                        <i class="ti-eye"></i> Ver
+                                    </a>    
+                                    {{!-- <a href="#" class="table-actions" data-toggle="tooltip" data-original-title="Copiar Link"><i class="ti-files"></i> --}}
+                                </td>
+                            </tr>
+                        {{else}}
+                          <tr>
+                              <td colspan="5">No hay Invitaciones para mostrar</td>
+                          </tr>
+                        {{/each}}                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel1">Crear un formulario nuevo</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Organización:</label>
+                        <select name="organization" style="width: 100%">
+                            {{#each initialInfo.orgList}}
+                            <option value="{{id}}">{{name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Nombre:</label>
+                        <input type="text" class="form-control" id="recipient-name1">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="control-label">Descripción:</label>
+                        <textarea class="form-control" id="message-text1" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary">Enviar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        // toastr.success('El formulario ha sido creado con éxito!')
+    })
+</script>

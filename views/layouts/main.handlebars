@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/logo-caris.png">
+    <title>Caris</title>
+    <link rel="stylesheet" href="/dist/css/font-awasome-all.css">
+    <link rel="stylesheet" type="text/css" href="/forms/css/vendor/jquery.ui.css">
+    <!-- Custom CSS -->
+    <link href="/dist/css/jquery.dataTables.min.css" rel="stylesheet">
+    {{#if useDataTables}}
+        <link href="/dist/css/buttons.dataTables.min.css" rel="stylesheet">
+    {{/if}}
+    <link href="/dist/css/pages/tab-page.css" rel="stylesheet">
+    <link href="/dist/css/style.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/forms/css/onoff.css">
+    <link href="/dist/css/pages/user-card.css" rel="stylesheet">
+    <link href="/dist/css/toastr.min.css" rel="stylesheet">
+    <link href="/dist/css/switchery.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/forms/css/airdatepicker.css">
+
+    <link rel="stylesheet" href="/dist/css/morris.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="/assets/node_modules/popper/popper.min.js"></script>
+    <script src="/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!--    <script src="/dist/js/sweetalert.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+    <script src="/dist/js/raphael-min.js"></script>
+    <script src="/dist/js/morris.min.js"></script>
+    <script src="/dist/js/switchery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+    <script src="/forms/js/airdatepicker.js"></script>
+    <!--    <link href="/assets/node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css" rel="stylesheet">-->
+    <!--    <script src="/assets/node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js"></script>-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.3.3/css/bootstrap-colorpicker.min.css"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+
+    <style type="text/css">
+        footer, .page-titles {
+            position: static !important;
+        }
+
+        .fa.pull-right,
+        .fa.fa-pull-right,
+        [class*=" fa-"].pull-right,
+        [class*=" fa-"].fa-pull-right {
+            line-height: inherit;
+        }
+
+        .left .nav > .item > .nav-link, .item-holder, .left .footer a {
+            font-size: 14px;
+            text-transform: capitalize;
+            width: 100% !important;
+            padding-left: 13px;
+            padding-right: 0px;
+            line-height: 40px;
+            color: rgba(255, 255, 255, 1) !important;
+        }
+
+        .left .nav > .item > .nav-link i, .item-holder i {
+            vertical-align: middle;
+        }
+
+        .topbar .top-navbar .navbar-nav > .nav-item > .nav-link {
+            font-size: 15px;
+            text-transform: capitalize;
+        }
+
+        .chevron-rotate-90 {
+            transform: rotate(90deg);
+        }
+
+        .chevron-rotate-0 {
+            transform: rotate(360deg);
+        }
+
+        .bg-options {
+            background: #fff;
+        }
+
+        .card {
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 0px solid transparent;
+            border-radius: 0px;
+        }
+    </style>
+</head>
+
+<body class="skin-default-dark fixed-layout">
+<!-- ============================================================== -->
+<!-- Preloader - style you can find in spinners.css -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <div class="loader">
+        <div class="loader__figure"></div>
+        <p class="loader__label">Caris</p>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<div id="main-wrapper" class="wrapper d-flex align-items-stretch">
+    <!-- ============================================================== -->
+    <!-- Topbar header - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <header class="topbar">
+        <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+            <!-- ============================================================== -->
+            <!-- Logo -->
+            <!-- ============================================================== -->
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">
+                    <!-- Logo icon --><b>
+                    <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                    <!-- Dark Logo icon -->
+
+
+                    {{#if session.orgHasBranding}}
+                        <img src="/uploads/organization/{{session.orgLogo}}" width="125" alt="homepage" class="dark-logo"/>
+                        <img src="/uploads/organization/{{session.orgLogo}}" width="125" alt="homepage" class="light-logo"/>
+                    {{else}}
+                        <img src="/img/hubex-logo-neg.png" width="125" alt="homepage" class="dark-logo"/>
+                        <!-- Light Logo icon -->
+                        <img src="/img/hubex-logo-neg.png" width="125" alt="homepage" class="light-logo"/>
+                    {{/if}}
+                </b>
+                    <!--End Logo icon -->
+                    <!-- Logo text -->
+                    <span>
+                         <!-- dark Logo text -->
+
+                     	</span> </a>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Logo -->
+            <!-- ============================================================== -->
+            {{#unless hideNavbar}}
+                <div class="navbar-collapse">
+                    <!-- ============================================================== -->
+                    <!-- toggle and nav items -->
+                    <!-- ============================================================== -->
+
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <form class="app-search d-none d-md-block d-lg-block">
+
+                                <!-- <input type="text" class="form-control" placeholder="Buscar"> -->
+
+                            </form>
+                        </li>
+                    </ul>
+                    <!-- ============================================================== -->
+                    <!-- User profile and search -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav my-lg-0">
+                        <li class="nav-item dropdown u-pro">
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="true">
+                                <i class="material-icons" style="vertical-align: middle">announcement</i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right animated flipInY">
+                                <a class="dropdown-item">0 Messages</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown u-pro">
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="true">
+                                <i class="material-icons" style="vertical-align: middle" id="bell">notifications</i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right animated flipInY" id="notifications">
+                                <a class="dropdown-item">0 Notifications</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown u-pro">
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <span class="hidden-md-down text-lowercase">
+                                     &nbsp; {{user.email}}&nbsp;<i style="padding-left: 5px"
+                                                                   class="fa fa-angle-down"></i></span> </a>
+                            <div class="dropdown-menu dropdown-menu-right animated flipInY">
+                                <a href="/dashboard/profile" class="dropdown-item">Account</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="/dashboard/logout" class="dropdown-item"><i class="fa fa-power-off"></i> Salir</a>
+                            </div>
+                        </li>
+                        <!-- ============================================================== -->
+                        <!-- End mega menu -->
+                        <!-- ============================================================== -->
+                        <!-- <li class="nav-item right-side-toggle"> <a class="nav-link  waves-effect waves-light" href="#"><i class="ti-settings"></i></a></li> -->
+                    </ul>
+                </div>
+            {{/unless}}
+        </nav>
+    </header>
+
+    <div class="left">
+        <div class="page-wrapper" style="background: unset !important; overflow-y: auto; height: 407px">
+<!--        <div class="page-wrapper" style="background: unset !important;">-->
+            <ul class="nav flex-column">
+                <li class="nav-item item u-pro">
+                    <a class="nav-link waves-effect waves-dark
+                                {{#if isDashboard}}
+                                link-active
+                                {{/if}}
+                            " href="/">
+                        <i class="material-icons">dashboard</i>&nbsp; &nbsp;
+                        <span>Dashboard</span>&nbsp; </a>
+                </li>
+                {{#if permissions.projects.hasView}}
+                    <li class="nav-item item dropdown u-pro">
+                        <a class="nav-link waves-effect waves-dark
+                                {{#if isProjects}}
+                                link-active
+                                {{/if}}
+                            " href="/dashboard/projects">
+                            <i class="material-icons">assignment</i> &nbsp; &nbsp;<span>Projects</span>&nbsp;</a>
+                    </li>
+                {{/if}}
+                {{#if permissions.organizations.hasView}}
+                    <li class="nav-item item dropdown u-pro">
+                        <a class="nav-link waves-effect waves-dark
+                                {{#if isOrganization}}
+                                link-active
+                                {{/if}}
+                            " href="/dashboard/organizations">
+
+                            <i class="material-icons">business</i> &nbsp; &nbsp;<span>Organizaciones</span>&nbsp; </a>
+                    </li>
+                {{/if}}
+                {{#if permissions.components.hasView}}
+                    <li class="nav-item item dropdown u-pro">
+                        <a class="nav-link waves-effect waves-dark
+                                {{#if isComponent}}
+                                link-active
+                                {{/if}}
+                            " href="/dashboard/components">
+
+                            <i class="material-icons">collections</i> &nbsp; &nbsp;<span>Componentes</span> &nbsp;
+                        </a>
+                    </li>
+                {{/if}}
+                {{#if permissions.roles.hasView}}
+                    <li class="nav-item item dropdown u-pro">
+                        <a class="nav-link waves-effect waves-dark
+                                {{#if isRoles}}
+                                link-active
+                                {{/if}}
+                            " href="/dashboard/roles">
+
+                            <i class="material-icons">gavel</i> &nbsp; &nbsp;<span>Roles</span>&nbsp; </a>
+                    </li>
+                {{/if}}
+                {{#if permissions.users.hasView}}
+                    <li class="nav-item item dropdown u-pro">
+                        <a class="nav-link waves-effect waves-dark
+                                {{#if isUser}}
+                                link-active
+                                {{/if}}
+                            " href="/dashboard/users">
+
+                            <i class="material-icons">people</i>&nbsp; &nbsp;<span>Usuarios</span>&nbsp; </a>
+                    </li>
+                {{/if}}
+<!--                {{#if permissions.uniqueurlui.hasView}}-->
+<!--                    <li class="nav-item dropdown u-pro has-chevron" id="uniqueurlui">-->
+<!--                        <a class="nav-link item-holder waves-effect waves-dark " aria-expanded="true" href="#submenu1"-->
+<!--                           data-toggle="collapse"-->
+<!--                           data-target="#submenu1">-->
+<!--                            <i class="material-icons">loop</i>&nbsp; &nbsp;<span-->
+<!--                                class="parent-of-dropdown">Procesos</span>&nbsp;&nbsp;<i-->
+<!--                                class="fa fa-chevron-right toggle-chevron fa-pull-right" style="margin-right: 20px"></i></a>-->
+<!--                        <div class="collapse" id="submenu1" aria-expanded="false">-->
+<!--                            <ul class="flex-column pl-2 nav">-->
+<!--                                <li class="nav-item item dropdown u-pro">-->
+<!--                                    <a class="nav-link py-0" href="/dashboard/invitations"><i class="material-icons">donut_large</i>&nbsp;-->
+<!--                                        &nbsp;<span>Ver Procesos</span></a>-->
+<!--                                </li>-->
+<!--                                <li class="nav-item item dropdown u-pro">-->
+<!--                                    <a class="nav-link py-0" href="/dashboard/uniqueUrls"><i-->
+<!--                                            class="material-icons">dns</i>&nbsp;-->
+<!--                                        &nbsp;<span>Crear Procesos</span></a>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                {{/if}}-->
+
+
+                {{#if permissions.process.hasView}}
+                    <li class="nav-item dropdown u-pro has-chevron" id="process">
+                        <a class="nav-link item-holder waves-effect waves-dark" aria-expanded="true" href="#submenu2"
+                           data-toggle="collapse"
+                           data-target="#submenu2">
+                            <i class="material-icons">compare_arrows</i>&nbsp; &nbsp;<span class="parent-of-dropdown">Procesos</span>&nbsp;&nbsp;<i
+                                class="fa fa-chevron-right toggle-chevron fa-pull-right" style="margin-right: 20px"></i></a>
+                        <div class="collapse" id="submenu2" aria-expanded="false">
+                            <ul class="flex-column pl-2 nav">
+                                {{#each session.projectsOwnered}}
+                                    <li class="nav-item item dropdown u-pro">
+                                        <a class="nav-link py-0
+                                {{#if_eq formId ../currentProject}}
+                                        link-active
+                                {{/if_eq}}"
+                                           href="/{{[Project.type]}}/{{[Project.organizationId]}}/{{formId}}/list">
+                                            <i class="material-icons">description</i>&nbsp;
+                                            &nbsp;<span>{{[Project.name]}}</span></a>
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    </li>
+                {{/if}}
+
+                {{#if permissions.updatecaris.hasView}}
+                    <li class="nav-item item dropdown">
+                        <a class="nav-link waves-effect waves-dark" href="/dashboard"
+                           data-toggle="tooltip" data-placement="bottom"
+                           data-original-title="Actualizar Datos">
+                            <i class="ti-pencil-alt"></i><span>Update Caris</span>
+                        </a>
+                    </li>
+                {{/if}}
+                <!-- ============================================================== -->
+                <!-- End Messages -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- mega menu -->
+                <!-- ============================================================== -->
+                {{#if permissions.reports.hasView}}
+                    <li class="nav-item dropdown u-pro has-chevron" id="reports">
+                        <a class="nav-link item-holder waves-effect waves-dark" aria-expanded="true" href="#submenu3"
+                           data-toggle="collapse"
+                           data-target="#submenu3">
+                            <i class="material-icons">trending_up</i>&nbsp; &nbsp;<span class="parent-of-dropdown">Reportes</span>&nbsp;&nbsp;<i
+                                class="fa fa-chevron-right toggle-chevron fa-pull-right" style="margin-right: 20px"></i></a>
+                        <div class="collapse" id="submenu3" aria-expanded="false">
+                            <ul class="flex-column pl-2 nav">
+                                {{#each session.projectsOwnered}}
+                                    <li class="nav-item item dropdown u-pro">
+                                        <a class="nav-link py-0
+                                {{#if_eq formId ../currentFormId}}
+                                        link-active
+                                {{/if_eq}}"
+                                           href="/reportes/{{formId}}">
+                                            <i class="material-icons">description</i>&nbsp;
+                                            &nbsp;<span>{{[Project.name]}}</span></a>
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    </li>
+                {{/if}}
+
+<!--                {{#if permissions.reports.hasView}}-->
+<!--                    <li class="nav-item item dropdown">-->
+<!--                        <a class="nav-link waves-effect waves-dark {{#if isReports}} link-active {{/if}}"-->
+<!--                           href="/reportes"-->
+<!--                           data-toggle="tooltip" data-placement="bottom"-->
+<!--                           data-original-title="Reportes">-->
+<!--                            <i class="material-icons">trending_up</i> &nbsp; &nbsp;<span>Reportes</span> &nbsp;-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                {{/if}}-->
+                {{#if permissions.forms.hasView}}
+                    <li class="nav-item item dropdown">
+                        <a class="nav-link waves-effect waves-dark {{#if isForms}} link-active {{/if}}"
+                           href="/dashboard/forms"
+                           data-toggle="tooltip" data-placement="bottom"
+                           data-original-title="Forms">
+                            <i class="material-icons">developer_board</i> &nbsp; &nbsp;<span>Formularios</span> &nbsp;
+                        </a>
+                    </li>
+                {{/if}}
+                {{#if permissions.settings.hasView}}
+                    <li class="nav-item item dropdown">
+                        <a class="nav-link waves-effect waves-dark {{#if isSettings}} link-active {{/if}}"
+                           href="/dashboard/settings"
+                           data-toggle="tooltip" data-placement="bottom"
+                           data-original-title="Reportes">
+                            <i class="material-icons">build</i> &nbsp; &nbsp;<span>Settings</span> &nbsp;
+                        </a>
+                    </li>
+                {{/if}}
+                {{#if permissions.information.hasView}}
+                    <li class="nav-item item dropdown">
+                        <a class="nav-link waves-effect waves-dark {{#if isInformation}} link-active {{/if}}"
+                           href="/dashboard/information"
+                           data-toggle="tooltip" data-placement="bottom"
+                           data-original-title="Reportes">
+                            <i class="material-icons">priority_high</i> &nbsp; &nbsp;<span>Information</span> &nbsp;
+                        </a>
+                    </li>
+                {{/if}}
+            </ul>
+        </div>
+        <footer class="footer">
+            <a id="toggle-sidebar" style="cursor: pointer; padding: initial;"><i
+                    class="material-icons sidebar-arrow leftArrow">clear</i></a>
+        </footer>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Topbar header -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Page wrapper  -->
+    <!-- ============================================================== -->
+    <div class="right">
+        <div class="page-wrapper" style="overflow-y: auto; height: 407px;">
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid Override">
+                <!-- ============================================================== -->
+                <!-- Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                {{{body}}}
+                <!-- /.row -->
+                <!-- ============================================================== -->
+                <!-- End PAge Content -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Right sidebar -->
+                <!-- ============================================================== -->
+
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <footer class="footer">
+            ©
+            <script>
+                const CurrentYear = new Date().getFullYear();
+                document.write(CurrentYear)
+            </script>
+            Caris
+
+            <span style="float:right">Version 0.1</span>
+            {{!-- <a href="#" style="float:right; margin-right:10px;">Disclaimer</a> --}}
+            <a href="#" style="float:right; margin-right:10px;">Ayuda</a>
+        </footer>
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="/dist/js/perfect-scrollbar.jquery.min.js"></script>
+<!--Wave Effects -->
+<script src="/dist/js/waves.js"></script>
+<!--Menu sidebar -->
+<script src="/dist/js/sidebarmenu.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.0/jquery.matchHeight-min.js"><
+script >
+
+<!--stickey kit -->
+< script
+src = "/assets/node_modules/sticky-kit-master/dist/sticky-kit.min.js" ></script>
+<script src="/assets/node_modules/sparkline/jquery.sparkline.min.js"></script>
+<!--Custom JavaScript -->
+<script src="/dist/js/custom.min.js"></script>
+<!--morris JavaScript -->
+
+<script src="/assets/node_modules/jquery-sparkline/jquery.sparkline.min.js"></script>
+<!-- Popup message jquery -->
+<script src="/dist/js/toastr.min.js"></script>
+
+<!-- Chart JS -->
+<script src="/dist/js/dashboard1.js"></script>
+<script src="/dist/js/jquery-ui.min.js"></script>
+<!-- jQuery peity -->
+<script src="/dist/js/jquery.dataTables.min.js"></script>
+{{#if useDataTables}}
+    <script src="/dist/js/dataTables.buttons.min.js"></script>
+    <script src="/dist/js/dataTables.buttons.flash.min.js"></script>
+    <script src="/dist/js/dataTable.jszip.min.js"></script>
+    <script src="/dist/js/dataTable.pdfmake.min.js"></script>
+    <script src="/dist/js/dataTable.vfs_fonts.js"></script>
+    <script src="/dist/js/dataTable.buttons.html5.min.js"></script>
+    <script src="/dist/js/dataTable.vfs_fonts.js"></script>
+{{/if}}
+<script src="/assets/node_modules/peity/jquery.peity.min.js"></script>
+<script src="/assets/node_modules/peity/jquery.peity.init.js"></script>
+<script src="/dist/js/moment.min.js"></script>
+<script src="/dist/js/caris.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.3.3/js/bootstrap-colorpicker.min.js"></script>
+<script src="/dist/js/jquery-idleTimeout.min.js"></script>
+<script src="/dist/js/store.modern.min.js"></script>
+{{#if useDataTables}}
+    <script>
+        $(document).ready(function () {
+            $('.table-datatable').DataTable({
+                language: {
+                    "url": "/dist/js/dataTable.es.json",
+                },
+                dom: 'Bfrtpl',
+                buttons: [
+                    {
+                        extend: "excelHtml5",
+                        filename: function fname() {
+                            return "EXCEL-CARIS-" + Date.now();
+                        },
+                        exportOptions: {
+                            columns: "thead th:not(.noExport)"
+                        }
+                    },
+                    {
+                        extend: "csvHtml5",
+                        filename: function fname() {
+                            return "CSV-CARIS-" + Date.now();
+                        },
+                        exportOptions: {
+                            columns: "thead th:not(.noExport)"
+                        }
+                    },
+                    {
+                        extend: "pdfHtml5",
+                        filename: function fname() {
+                            return "PDF-CARIS-" + Date.now();
+                        },
+                        exportOptions: {
+                            columns: "thead th:not(.noExport)"
+                        }
+                    },
+                    'pageLength',
+                ],
+                "pageLength": 50,
+                "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
+            });
+        });
+    </script>
+{{/if}}
+<script>
+    function fetchUnreadIncomingMsgsFromKYBtuidentidadClients() {
+        $.ajax({
+            method: "get",
+            url: "/KYBTuIdentidad/fetchUnreadIncomingMsgsFromKYBtuidentidadClients",
+            success: function (result) {
+                if (result.success === true) {
+                    if (result.data.length > 0) {
+                        // console.log(result.data);
+                        $("#bell").css('color', '#01c0c8')
+                        let unreadMailboxClient = '<p class="dropdown-item" style="color: #01c0c8">KYB TuIdentidad Clients Incoming Mailbox Messages</p>';
+                        result.data.map((element => {
+                            //local
+                            // let redirectToMailBoxOfClientURL = "/kyb/c647238d-1622-4cbd-baa2-d34276508b41/7de08674-260a-4ba1-9c39-e23efc61e5b9/" + element.carisId + "/view";
+                            //live
+                            let redirectToMailBoxOfClientURL = "/kyb/d3fc1a2b-d37c-4177-adef-266848895ca7/ecc13010-c2a1-4eed-a41e-7ed9861872a1/" + element.carisId + "/view";
+                            unreadMailboxClient = unreadMailboxClient + '<a class="dropdown-item" href="' + redirectToMailBoxOfClientURL + '">' + element.email + '</a>'
+                        }))
+                        $("#notifications").html(unreadMailboxClient)
+                    }
+                }
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        function uuidv4() {
+            return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+                    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+            );
+        }
+
+        setInterval(function () {
+            let date = Math.floor(Date.now() / 1000);
+            $.ajax({
+                method: "get",
+                url: "/checkLoginValidity?key=" + uuidv4() + "&session=" + date,
+                success: function (data) {
+                    if (data.success === true) {
+                    } else {
+                        toastr.error(data.message, function () {
+                            setTimeout(function () {
+                                window.location.href = '/dashboard/logout';
+                            }, 3000);
+                        });
+                    }
+                },
+                error: function (data) {
+                    toastr.error('Application connection is Halted. Please hold on for some minutes.');
+                }
+            });
+        }, 3000);
+
+        $(document).idleTimeout({
+            redirectUrl: '/dashboard/logout',
+            idleTimeLimit: 1200,           // 'No activity' time limit in seconds. 1200 = 20 Minutes
+            idleCheckHeartbeat: 2,
+            customCallback: false,
+            activityEvents: 'click keypress scroll wheel mousewheel mousemove',
+            enableDialog: true,
+            dialogDisplayLimit: 30,
+            dialogTitle: 'Su Cesión esta por terminar', // Session Expiration Warning
+            dialogText: 'Because you have been inactive, your session is about to expire.',
+            dialogTimeRemaining: 'Time remaining',
+            dialogStayLoggedInButton: 'Seguir usando la aplicación', // Stay Logged In
+            dialogLogOutNowButton: false,
+            errorAlertMessage: 'Please disable "Private Mode", or upgrade to a modern browser. Or perhaps a dependent file missing.',
+            sessionKeepAliveTimer: false,   // ping the server at this interval in seconds. 600 = 10 Minutes. Set to false to disable pings
+            sessionKeepAliveUrl: false // set URL to ping - does not apply if sessionKeepAliveTimer: false
+        });
+
+        $(".has-chevron").click(function () {
+            let target = $(this).attr('id');
+            $('#' + target).find('div').on('shown.bs.collapse', function () {
+                // $('#'+ target).find('.toggle-chevron').css('display', 'unset');
+                $('#' + target).find('.toggle-chevron').removeClass('chevron-rotate-0');
+                $('#' + target).find('.toggle-chevron').addClass('chevron-rotate-90');
+
+            });
+            $('#' + target).find('div').on('hidden.bs.collapse', function () {
+                // $('#'+ target).find('.toggle-chevron').css('display', 'none');
+                $('#' + target).find('.toggle-chevron').addClass('chevron-rotate-0');
+                $('#' + target).find('.toggle-chevron').removeClass('chevron-rotate-90');
+            });
+        });
+
+        $('.left .has-chevron').each(function () {
+            if ($(this).find('li > a.link-active').length !== 0) {
+                $(this).find('div').show();
+                // $(this).find('.toggle-chevron').css('display', 'unset');
+                $(this).find('.toggle-chevron').removeClass('chevron-rotate-0');
+                $(this).find('.toggle-chevron').addClass('chevron-rotate-90');
+
+            }
+        });
+        if (sessionStorage.getItem('sidebar-collapse') == 'true') {
+            $('.left li a span').addClass('sidebar-collapse');
+            $('.sidebar-arrow').toggleClass('leftArrow');
+            $('.sidebar-arrow').text('keyboard_arrow_right');
+            $(".left").css('width', '60px');
+            $(".right").css('width', '-webkit-fill-available');
+            $(".sidebar-arrow").css('float', '');
+            $(".toggle-chevron").css('display', 'none');
+        } else {
+            $('.left li a span').addClass('sidebar-open');
+            $('.sidebar-arrow').text('clear');
+            $(".left").css('width', '230px');
+            $(".sidebar-arrow").css('float', 'left');
+            $(".toggle-chevron").css('display', '');
+        }
+        $("#toggle-sidebar").bind('click', function () {
+            $('.sidebar-arrow').toggleClass('leftArrow').promise().done(function (arrow) {
+                if (!$(arrow).hasClass('leftArrow')) {
+                    $(arrow).text('keyboard_arrow_right');
+                    $(".left").css('width', '60px');
+                    $(".right").css('width', '-webkit-fill-available');
+                    $('.sidebar-arrow').css('float', '');
+                    $(".toggle-chevron").css('display', 'none');
+                    $('.left li a span').removeClass('sidebar-open');
+                    $('.left li a span').addClass('sidebar-collapse');
+                    sessionStorage.setItem('sidebar-collapse', 'true');
+                } else {
+                    $(arrow).text('clear');
+                    $(".left").css('width', '230px');
+                    $(arrow).css('float', 'left');
+                    $(".toggle-chevron").css('display', '');
+                    $('.left li a span').removeClass('sidebar-collapse');
+                    $('.left li a span').addClass('sidebar-open');
+                    sessionStorage.setItem('sidebar-collapse', 'false');
+                }
+            });
+        });
+
+        setInterval(fetchUnreadIncomingMsgsFromKYBtuidentidadClients, 300000)
+    });
+</script>
+</body>
+
+</html>

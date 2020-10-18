@@ -1,0 +1,226 @@
+<style >
+    .center-div{
+        width: 600px;
+        background: #fff;
+        margin: 50px auto;
+        padding: 20px;
+    }
+    .error{
+        color:red !important;
+    }
+
+    .table-actions{
+        font-size: 16px;
+        color: #333;
+        margin: 0 5px;
+    }
+
+    html, body {
+        height: 100%
+    }
+
+    .container-fluid {
+        min-height: 100%;
+        overflow: hidden;
+    }
+
+row.is-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+.row.is-flex > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
+}
+
+/*
+* And with max cross-browser enabled.
+* Nobody should ever write this by hand. 
+* Use a preprocesser with autoprefixing.
+*/
+.row.is-flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.row.is-flex > [class*='col-'] {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+</style>
+{{#if error}}
+    <div id="error" class="alert alert-danger" style="margin-top: 25px;">{{errMessage}}</div>
+{{/if}}
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">Crear Solicitud de formulario</h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/dashboard/invitations">Invitaciones</a></li>
+                <li class="breadcrumb-item active">
+                    Ver Invitación
+                </li>
+            </ol>
+            
+        </div>
+    </div>
+</div>
+<div class="row is-flex">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Información sobre la invitación</h4>
+                <!-- <h6 class="card-subtitle">Add class <code>.color-table .dark-table</code></h6> -->
+                    <form action="/dashboard/process/{{org}}/createInvitation" method="POST">
+                        
+                        <div class="form-group">
+                            <label for="name" class="control-label">Nombre:</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{invitation.name}}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname" class="control-label">Apellidos:</label>
+                            <input type="text" class="form-control" id="lastname" name="lastname" value="{{invitation.lastname}}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="idNumber" class="control-label">Cédula:</label>
+                            <input type="text" class="form-control" id="idNumber" name="idNumber" value="{{invitation.idNumber}}" disabled>
+                        </div>
+
+                        {{!-- <div class="form-group">
+                            <label for="proyect" class="control-label">Proyecto: </label>
+                            <select name="proyect" class="form-control"  didsabled>
+                                <option value="cic">CIC</option>
+                            </select>
+                        </div> --}}
+                        <div class="form-group">
+                            <label for="name" class="control-label">Caducidad (horas): </label>
+                            <input type="number" class="form-control" id="caducity" name="caducity" value="48" disabled>
+                        </div>
+
+                        <label for="url" class="control-label">URL: </label> <br>
+                        <div class="input-group mb-3">
+                            {{#if isKYC}}
+                            <input type="text" class="form-control" id="url" name="url" value="https://apps.hubex.tech/forms/kyc/cs/kyc/login" disabled>
+                            <div class="input-group-append">
+                                <a href="#" class="input-group-text copy-link" 
+                                    data-copy="https://apps.hubex.tech/forms/kyc/cs/kyc/login">
+                                    <i class="far fa-copy"></i>
+                                </a>
+                            </div>
+                            {{else}}
+                            <input type="text" class="form-control" id="url" name="url" value="{{domain}}/{{form.domainNamespace}}/{{invitation.requestId}}" disabled>
+                            <div class="input-group-append">
+                                <a href="#" class="input-group-text copy-link" 
+                                    data-copy="{{domain}}/{{form.domainNamespace}}/{{invitation.requestId}}">
+                                    <i class="far fa-copy"></i>
+                                </a>
+                            </div>
+                            {{/if}}
+                        </div>
+                        
+                        {{!-- <div class="form-group">
+                            <label for="description" class="control-label">Descripción:</label>
+                            <textarea class="form-control" name="description" rows="3">{{form.description}}</textarea>
+                        </div> --}}
+                        {{!-- <div class="modal-footer">
+                            <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button> -->
+                            <button type="submit" class="btn btn-primary">
+                                {{#if isEdit}}
+                                    Editar
+                                {{else}}
+                                    Crear
+                                {{/if}}
+                            </button>
+                        </div> --}}
+                    </form>
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 ">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Información del código único</h4>
+                <div class="form-group">
+                            <label for="code" class="control-label">Código: </label>
+                            <input type="text" class="form-control" id="code" name="code" value="{{invitation.requestId}}" disabled>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="code" class="control-label">Esta Activo? </label>
+                            <input type="text" class="form-control" id="code" name="code" value="{{isYesNo invitation.isActive}}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="code" class="control-label">Fecha de activación: </label>
+                            <input type="text" class="form-control" id="code" name="code" value="{{parse_dateSS invitation.createdAt}}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="code" class="control-label">Ha sido usado? </label>
+                            <input type="text" class="form-control" id="code" name="code" value="{{isYesNo invitation.hasBeenSeen}}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="code" class="control-label">Fecha de uso </label>
+                            <input type="text" class="form-control" id="code" name="code" value="{{parse_dateSS invitation.activatedDate}}" disabled>
+                        </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 ">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Información del Usuario</h4>
+                <div class="form-group">
+                            <label for="code" class="control-label">Creado por: </label>
+                            <input type="text" class="form-control" id="code" name="code" value="{{invitation.createdBy}}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="code" class="control-label">Fecha de creación: </label>
+                            <input type="text" class="form-control" id="code" name="code" value="{{parse_dateSS invitation.createdAt}}" disabled>
+                        </div>                        
+            </div>
+        </div>
+    </div>   
+</div>         
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        
+        {{#if isEdit}}
+            $('#organization').hide();
+            $('#organization').val('{{form.organizationId}}');
+            $('#organization').show();
+        {{/if}}
+
+         $('.copy-link').on('click',function(e){
+             e.preventDefault();
+             var element = '#url'
+             var elval = $(element).val();
+             console.log('elval', elval)
+             var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val(elval).select();
+            document.execCommand("copy");
+            $temp.remove();
+
+            toastr.success('Copiado')
+
+         })
+        
+    });
+</script>

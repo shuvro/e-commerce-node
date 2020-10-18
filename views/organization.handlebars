@@ -1,0 +1,199 @@
+{{#if permissions.organizations.hasView}}
+    <style>
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            color: unset !important;
+        }
+    </style>
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h4 class="text-themecolor">
+                {{#if isEdit}}
+                    Editar Organización
+                {{else}}
+                    Crear Organización
+                {{/if}}
+            </h4>
+        </div>
+        <div class="col-md-7 align-self-center text-right">
+            <div class="d-flex justify-content-end align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/dashboard/organizations">Lista de Organizations</a></li>
+                    <li class="breadcrumb-item active">
+                        {{#if isEdit}}
+                            Editar Organización
+                        {{else}}
+                            Crear Organización
+                        {{/if}}
+                    </li>
+                </ol>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8 offset-md-2">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">
+                    {{#if isEdit}}
+                        Editar Organización
+                    {{else}}
+                        Crear Organización
+                    {{/if}}
+                </h4>
+                <div class="form-horizontal form-material">
+                    <div class="form-group">
+                        <center class="m-t-30"><img
+                            {{#if isEdit}}
+                            src="{{imageUrl}}"
+                            {{else}}
+                            src="/img/hubex-logo-neg.png"
+                            {{/if}}
+                            class="form-logo" id="form-logo" width="150">
+                            <h6 class="control-label m-t-10 text-uppercase">LOGO</h6>
+                            <input style="margin-left: 5rem" id="uploadOrgLogo" accept=".jpg,.png,.jpeg" type="file"
+                                   name="uploadOrgLogo">
+                        </center>
+                        {{#if isEdit}}
+                            <input type="hidden" name="image" id="image" value="{{organizationDetails.logo}}">
+                        {{else}}
+                            <input type="hidden" name="image" id="image" value="">
+                        {{/if}}
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="control-label">Nombre</label>
+                        <input type="text" class="form-control" name="name" id="name" required
+                               value="{{organizationDetails.name}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="email_primary" class="control-label">Email Principal</label>
+                        <input type="email" class="form-control" name="email_primary" id="email_primary"
+                               value="{{organizationDetails.email_primary}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="email_secundary" class="control-label">Email Secundario</label>
+                        <input type="email" class="form-control" name="email_secundary" id="email_secundary"
+                               value="{{organizationDetails.email_secundary}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="control-label">Teléfono</label>
+                        <input type="text" class="form-control" name="phone" id="phone"
+                               value="{{organizationDetails.phone}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="address" class="control-label">Dirección</label>
+                        <input type="text" class="form-control" name="address" id="address"
+                               value="{{organizationDetails.address}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="website" class="control-label">Sitio Web</label>
+                        <input type="text" class="form-control" name="website" id="website"
+                               value="{{organizationDetails.website}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="zip" class="control-label">Zip</label>
+                        <input type="text" class="form-control" name="zip" id="zip"
+                               value="{{organizationDetails.zip}}">
+                    </div>
+
+                    {{#if isEdit}}
+                        <input type="hidden" name="organizationId" id="organizationId"
+                               value="{{organizationDetails.id}}">
+                    {{/if}}
+                    {{#if permissions.organizations.hasCreate}}
+                        <button type="submit" class="btn btn-primary" id="btnSubmit">Submit</button>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.form-logo').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $(document).ready(function () {
+            $("#btnSubmit").click(function (e) {
+                e.preventDefault();
+                $(this).prop('disabled', true);
+                $.ajax({
+                    method: "{{method}}",
+                    url: "/dashboard/organizations/{{action}}",
+                    data: {
+                        name: $("#name").val(),
+                        email_primary: $("#email_primary").val(),
+                        email_secundary: $("#email_secundary").val(),
+                        phone: $("#phone").val(),
+                        address: $("#address").val(),
+                        website: $("#website").val(),
+                        zip: $("#zip").val(),
+                        image: $("#image").val(),
+                        organizationId: $("#organizationId").val()
+                    },
+                    success: function (data) {
+                        if (data.success === true) {
+                            toastr.success(data.message, function () {
+                                setTimeout(function () {
+                                    window.location.href = '/dashboard/organizations';
+                                }, 2000);
+                            });
+                        } else {
+                            if (data.errors && data.errors.length > 0) {
+                                let errors = data.errors;
+                                for (let i = 0; i < errors.length; i++) {
+                                    toastr.error(errors[i].msg);
+                                }
+                            } else {
+                                toastr.error(data.message);
+                            }
+                            $('#btnSubmit').removeAttr('disabled');
+                        }
+                    },
+                    error: function (data) {
+                        toastr.error('Technical Error');
+                        $('#btnSubmit').removeAttr('disabled');
+                    }
+                })
+                        .done(function () {
+                            $('#btnSubmit').removeAttr('disabled');
+                        })
+                        .fail(function () {
+                            toastr.error('Request Failed');
+                            $('#btnSubmit').removeAttr('disabled');
+                        })
+            });
+
+            $("#uploadOrgLogo").change(function () {
+                readURL(this);
+                let data = new FormData();
+                $.each($('#uploadOrgLogo')[0].files, function (i, file) {
+                    data.append('organization', file);
+                });
+                $.ajax({
+                    url: '/dashboard/organizations/uploadOrgLogo',
+                    data: data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    method: 'POST',
+                    success: function (data) {
+                        if (data.success === true) {
+                            toastr.success(data.message, function () {
+                                console.log(data.files);
+                                if (data.files.filename != '') {
+                                    $("#image").val(data.files.filename);
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+{{/if}}

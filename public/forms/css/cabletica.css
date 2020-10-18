@@ -1,0 +1,220 @@
+.group textarea:focus ~ label:not(.error), 
+.group textarea:valid ~ label:not(.error), 
+.group input:focus ~ label:not(.error), 
+.group input:valid ~ label:not(.error) {
+    color: #fa6a00;
+}
+
+#idContrato.group input:valid ~ label:not(.error) {
+  top: -10px !important;
+}
+
+.monto-alterado,
+.nota-credito-upload,
+.pedido-upload,
+.cheque-efectivo,
+.monto-parcial,
+.idcontrato,
+#delete-row,
+.hide-field{
+	display: none;
+}
+body #submit-form,
+#agregar-detalle{
+	width: 103%;
+}
+
+.mdc-select{
+	height: 40px !important;
+}
+.mdc-select__native-control{
+	height: 40px !important;
+	padding-top: 10px !important;
+}
+.mdc-select__dropdown-icon{
+	bottom: 5px;
+}
+
+.input-next-to-select{
+	margin-top: 60px
+}
+
+.titulo{
+
+  margin-top: 30px;
+  font-size: 18px;
+  font-weight: bold !important;
+  color:  whitesmoke !important;
+  background: #7B7B7B;
+  padding: 5px;
+}
+
+.nombre-formulario{
+  text-align: center;
+  font-size: 26px;
+  font-weight: 400px;
+  
+}
+
+.justificado{
+text-align: justify;
+}
+
+.mg-top-m50{
+margin-top: -20px;  
+  
+}
+
+.mg-top-20{
+  margin-top: 20px;  
+    
+}
+
+.tituloBlack{
+
+  color:  rgb(0, 0, 0) !important
+}
+
+
+
+input[type="file"] {
+  display: block;
+}
+.imageThumb {
+  height: 85px;
+    /*border: 2px solid;*/
+    /*padding: 1px;*/
+    cursor: pointer;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+}
+.pip {
+  display: inline-block;
+  border: 1px solid #ccc;
+  margin: 10px 10px 0 0;
+      width: 165px;
+}
+.remove {
+  display: block;
+  /*background: #444;*/
+  /*border: 1px solid black;*/
+  color: red !important	;
+  text-align: center;
+  cursor: pointer;
+}
+.remove:hover {
+  background: white;
+  color: black;
+}
+
+.margin-top-30 {
+      margin-top: 30px;
+}
+
+/*.default .content-transition{
+  margin: 0;
+}
+*/
+
+.cc-info{
+  /*background: #aaa*/
+}
+
+
+.group input, .group textarea{
+  width: 99%
+}
+
+#ccIcon{
+    position: absolute;
+    right: 0;
+}
+
+#cc-info{
+  display: none;
+}
+
+.reclaim-container{
+      border: 1px solid #eee;
+    padding: 25px;
+    margin-bottom: 10px;
+}
+
+.reclaim-container .sub-container:not(:first-child) {
+
+  border-top: 3px dotted #717171;
+    margin: 25px 0;
+}
+
+.remove-detail:first-of-type {
+  display: none;
+}
+
+.reclaim-container .sub-container:not(:first-child) .remove-detail {
+  display: inline-block;
+}
+
+label.double-line{
+  top:-5px;
+}
+
+.mg-top-30{
+  margin-top: 30px;
+}
+
+@media (max-width: 479px){
+  .onoffswitch{
+    margin-top: -20px;
+  }
+  .mdc-layout-grid__cell--span-3, .mdc-layout-grid__cell--span-3-phone {
+    width: auto;
+    grid-column-end: span 4;
+  }
+  .mg-top-m50 {
+       margin-top: 10px; 
+  }  
+
+  #observaciones{
+    border: 1px solid #000;
+    padding: 5px;
+  }
+
+  body .pip{
+    width: 96%;
+  }
+
+  .pip .imageThumb{
+    height: 175px;
+  }
+}
+
+@media only screen and (max-device-width: 667px) and (min-device-width: 375px) and (orientation: portrait){
+  body {
+      width: 100%;
+      display: table;
+  }
+  .default header {
+      background: #f5f5f5;
+  }
+  header img {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-device-width: 1024px) and (min-device-width: 668px) and (orientation: portrait){
+  body {
+      width: 100%;
+      display: grid;
+  }
+  .group input{
+    width: 96%;
+  }
+
+  textarea{
+    background-color: #f2f2f2;
+    margin-top: 15px;
+  }
+  .mg-top-20 {
+       margin-top: 0; 
+  }
+}

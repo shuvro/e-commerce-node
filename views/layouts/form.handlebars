@@ -1,0 +1,184 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{{formType}}</title>
+	<link rel="stylesheet" type="text/css" href="/dist/css/material-components-web.min.css">
+	
+	
+	<link rel="stylesheet" type="text/css" href="/forms/css/vendor/jquery.ui.css">
+	<link rel="stylesheet" type="text/css" href="/forms/css/kyc.css">
+	<link rel="stylesheet" type="text/css" href="/forms/css/onoff.css">
+	<link rel="stylesheet" type="text/css" href="/forms/css/kyc.mediaqueries.css">
+
+	{{#if isContracargos}}
+	<link rel="stylesheet" type="text/css" href="/forms/css/contracargos.css">
+	<link rel="stylesheet" type="text/css" href="/forms/css/clients/{{org}}.css">
+	{{/if}}
+
+
+	{{#if isEvicertia}}
+	<link rel="stylesheet" type="text/css" href="/forms/css/evicertiaassa.css">
+	<link rel="stylesheet" type="text/css" href="/forms/css/clients/{{org}}.css">
+	{{/if}}
+	
+
+	{{#if isCabletica}}
+	<link rel="stylesheet" type="text/css" href="/forms/css/cabletica.css">
+	<link rel="stylesheet" type="text/css" href="/forms/css/clients/{{org}}.css">
+	{{/if}}	
+
+	{{#if isEvicertiaAssa}}
+	<link rel="stylesheet" type="text/css" href="/forms/css/evicertiaassa.css">
+	<link rel="stylesheet" type="text/css" href="/forms/css/clients/{{org}}.css">
+	{{/if}}	
+
+	{{#if isKYC}}
+	<link rel="stylesheet" type="text/css" href="/forms/css/forms.css">
+	<link rel="stylesheet" type="text/css" href="/forms/css/kycMain.css">
+	<link rel="stylesheet" type="text/css" href="/forms/css/airdatepicker.css">
+	<link rel="stylesheet" type="text/css" href="/forms/css/clients/{{org}}.css">
+	{{/if}}	
+
+	{{#if isCIC}}
+	<link rel="stylesheet" type="text/css" href="/forms/css/cic.css">
+	{{/if}}	
+
+	{{#if isTest}}
+	<script src="/forms/js/contracargos.js"></script>
+	{{/if}}
+
+
+	{{!-- {{#if isTest}}
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	{{/if}} --}}
+
+	
+</head>
+
+<body class="{{brand}}">
+	{{#if showHeader}}
+	<header>
+		<div class="content-transition">
+			<div class="mdc-layout-grid">	  
+				<div class="mdc-layout-grid__inner">
+				<div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4 demo-cell">
+					<div class="logo-wrapper">
+						<img src="{{logo}}" class="logo">
+					</div>
+					{{#unless isLogin}}
+					<div class="guardar-wrapper" style="display:none">
+						<button class="mdc-button mdc-button--outlined" id="continue">
+							<span class="mdc-button__label">Guardar <i class="far fa-save"></i></span>
+						</button>
+					</div>	
+					{{/unless}}
+				</div>
+					{{#if isEvicertiaAssa}}
+						<div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-1 demo-cell">
+						</div>					
+						<div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-7 demo-cell">
+							<p class = "encabezado_titular">  ASSA Compañía de Seguros S.A. | ASSA Salud Empresarial<br/>Suma Asegurada Anual Renovable| Seguro de Vida</p>
+						</div>
+
+					{{/if}}	
+
+					{{#if isKYC}}
+						{{#unless isLogin}}
+						<div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6 demo-cell hide-sm">
+						</div>					
+						<div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-2 demo-cell hide-sm">
+							<p class = "encabezado_titular">  
+								<button class="mdc-button mdc-button--outlined" id="continue">
+									<span class="mdc-button__label">Guardar <i class="far fa-save"></i></span>
+								</button>
+							</p>
+						</div>
+						{{/unless}}
+						
+					{{/if}}				
+
+			    	<!-- <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-10 demo-cell slogan">{{desc}}</div> -->
+			    </div>	
+			  </div>
+			</div>
+		</div>	
+	</header>
+	{{/if}}
+	<section class="content-transition">
+	
+		{{{body}}}
+		
+	</section>
+	{{#if showFooter}}
+	<footer>
+		<footer>
+			{{#if ./isCabletica}}
+				<div>Cabletica 2019. Todos los derechos reservados</div>
+			{{/if}}	
+
+			{{#if ./isEvicertiaAssa}}
+				<div>La documentación contractual y la nota técnica que integran este producto, están registrados ante la Superintendencia General de Seguros de conformidad con lo
+dispuesto por el artículo 29, inciso d) de la Ley Reguladora del Mercado de Seguros, Ley 8653, bajo el(los) registro(s) número P20-64-A05-508 y P20-64-A05-509
+de fecha 28 Febrero 2014 y P14-26-A05-200 y P14-26-A05-201 de fecha 14 de Mayo de 2012.</div>
+				<div>Dirección: Pozos de Santa Ana, Parque Empresarial Fórum 1, Edificio F, San José, Costa Rica.
+Teléfono: (506) 2503-2700 | Fax: (506) 2503-2797 | Apartado: 46-6155, Fórum, Santa Ana,</div>	
+				<div>Correo electrónico: contacto@assanet.com</div>									
+			{{/if}}	
+		</footer>	
+	</footer>
+	{{/if}}
+
+<script src="/dist/js/jquery-3.3.1.min.js" crossorigin="anonymous"></script>	
+<script src="/dist/js/jquery-ui.min.js" crossorigin="anonymous"></script>
+<script src="/dist/js/moment.min.js"></script>
+<script src="/dist/js/material-components-web.min.js"></script>
+<script src="/forms/js/vendor/dropzone.js"></script>
+<script src="/forms/js/vendor/jquery.mask.min.js"></script>
+<script src="/dist/js/jquery.validate.min.js"></script>
+<script src="/dist/js/sweetalert.min.js"></script>
+
+<script src="/dist/js/jquery.creditCardValidator.js" ></script>
+
+<script src="/forms/js/plugins.js"></script>
+<script src="/forms/js/signature_pad.js"></script>
+<script src="/forms/js/app.js"></script>
+<script src="/forms/js/main.js"></script>
+
+{{#if isContracargos}}
+<script src="/forms/js/contracargos.js"></script>
+{{/if}}
+
+
+
+{{#if isEvicertia}}
+<script src="/forms/js/evicertiaassa.js"></script>
+{{/if}}
+
+{{#if isCIC}}
+<script src="/forms/js/cic.js"></script>
+{{/if}}
+
+{{#if isCabletica}}
+<script src="/forms/js/cabletica.js"></script>
+{{/if}}
+
+{{#if isEvicertiaAssa}}
+<script src="/forms/js/evicertiaassa.js"></script>
+{{/if}}
+
+{{#if isKYC }}
+<script src="/forms/js/leform.js"></script>
+<script src="/forms/js/airdatepicker.js"></script>
+<script src="/dist/js/jquery.sticky.js"></script>
+<script src="/forms/js/kyc.js"></script>
+<script src="/forms/js/organizations/{{org}}-kyc.js"></script>
+{{/if}}
+<script src="https://kit.fontawesome.com/e86da48d6c.js"></script>
+
+</body>
+
+</html>

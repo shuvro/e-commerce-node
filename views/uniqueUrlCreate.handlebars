@@ -1,0 +1,108 @@
+<style >
+    .center-div{
+        width: 600px;
+        background: #fff;
+        margin: 50px auto;
+        padding: 20px;
+    }
+    .error{
+        color:red !important;
+    }
+
+    .table-actions{
+        font-size: 16px;
+        color: #333;
+        margin: 0 5px;
+    }
+</style>
+{{#if error}}
+    <div id="error" class="alert alert-danger" style="margin-top: 25px;">{{errMessage}}</div>
+{{/if}}
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">Crear Solicitud de formulario</h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/dashboard/invitations">Invitaciones</a></li>
+                <li class="breadcrumb-item active">
+                    Crear Solicitud
+                </li>
+            </ol>
+            
+        </div>
+    </div>
+</div>
+<div class="col-lg-6 offset-md-3">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Ingresar los datos solicitados</h4>
+            <!-- <h6 class="card-subtitle">Add class <code>.color-table .dark-table</code></h6> -->
+                <form action="/dashboard/process/{{org}}/createInvitation" method="POST">
+                    <input type="hidden" name="project_type" value="{{projects.type}}" />
+                    <div class="form-group">
+                        <label for="name" class="control-label">Nombre:</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="control-label">Primer Apellido:</label>
+                        <input type="text" class="form-control" id="lastname" name="lastname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="secondLastname" class="control-label">Segundo Apellido:</label>
+                        <input type="text" class="form-control" id="secondLastname" name="secondLastname" >
+                    </div>
+                    <div class="form-group">
+                        <label for="idNumber" class="control-label">Cédula:</label>
+                        <input type="text" class="form-control" id="idNumber" name="idNumber" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="control-label">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" required >
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="control-label">Teléfono:</label>
+                        <input type="text" class="form-control" id="phone" name="phone" >
+                    </div>
+                    <div class="form-group">
+                        <label for="proyect" class="control-label">Proyecto: </label>
+                        <select name="proyect" class="form-control"  didsabled>
+                            <option value="{{projects.formId}}">{{projects.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="control-label">Caducidad (horas): </label>
+                        <input type="number" class="form-control" id="caducity" name="caducity" value="48" disabled>
+                    </div>
+                    {{!-- <div class="form-group">
+                        <label for="description" class="control-label">Descripción:</label>
+                        <textarea class="form-control" name="description" rows="3">{{form.description}}</textarea>
+                    </div> --}}
+                    <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button> -->
+                        <button type="submit" class="btn btn-primary">
+                            {{#if isEdit}}
+                                Editar
+                            {{else}}
+                                Crear
+                            {{/if}}
+                        </button>
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        {{#if isEdit}}
+            $('#organization').hide();
+            $('#organization').val('{{form.organizationId}}');
+            $('#organization').show();
+        {{/if}}
+    })
+</script>

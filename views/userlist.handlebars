@@ -1,0 +1,191 @@
+{{#if permissions.users.hasView}}
+<style >
+    .center-div{
+        width: 600px;
+        background: #fff;
+        margin: 50px auto;
+        padding: 20px;
+    }
+    .error{
+        color:red !important;
+    }
+
+    .table-actions{
+        font-size: 16px;
+        color: #333;
+        margin: 0 5px;
+    }
+</style>
+{{#if error}}
+    <div id="error" class="alert alert-danger" style="margin-top: 25px;">{{errMessage}}</div>
+{{/if}}
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">Lista de Usuarios del sistema</h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Lista de usuarios</li>
+            </ol>
+            {{#if permissions.users.hasCreate}}
+            <a  href="/dashboard/users/create" class="btn btn-dark m-l-15"><i class="fa fa-plus-circle"></i> Crear Usuario</a>
+            {{/if}}
+        </div>
+    </div>
+</div>
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Lista de usuarios</h4>
+            <!-- <h6 class="card-subtitle">Add class <code>.color-table .dark-table</code></h6> -->
+            <div class="table-responsive">
+                <table class="table color-table dark-table table-datatable">
+                    <thead>
+                        <tr>
+                            {{#unless user.org}}
+                            <th>Organizacion</th>
+                            {{/unless}}
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Segundo Apellido</th>
+                            <th>Email</th>
+                            <th>Tipo</th>
+                            <th>Creado por</th>
+                            <th>Creado el</th>
+                            <th class="noExport">Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each initialInfo.userList}}
+                            <tr>
+                                {{#unless ../user.org}}
+                                <td>{{Organization.name}}</td>
+                                {{/unless}}
+                                <td>{{name}}</td>
+                                <td>{{lastname}}</td>
+                                <td>{{secondlastname}}</td>
+                                <td>{{email}}</td>
+                                <td>{{Role.roleName}}</td>
+                                <td>{{createdBy}}</td>
+                                <td>{{parse_date createdAt}}</td>
+                                <td>
+                                {{#if ../permissions.users.hasCreate}}
+                                    <a href="/dashboard/users/edit/{{id}}" class="table-actions" data-toggle="tooltip" data-original-title="Editar "><i class="ti-marker-alt"></i>
+                                    <a href="#" class="table-actions block" data-user="{{id}}" data-block-status="{{isLocked}}" data-toggle="tooltip" data-original-title="Bloquear">
+                                        {{#if isLocked}}
+                                            <i class=" fas fa-lock" style="color: red" title="Quieres desbloquear este usuario?"></i>
+                                        {{else}}
+                                            <i class="fas fa-lock-open" title="Quieres bloquear este usuario?"></i>
+                                        {{/if}}
+                                {{/if}}
+                                {{#if ../permissions.users.hasDelete}}
+                                    <a href="#" class="table-actions delete" data-user="{{id}}" data-toggle="tooltip" data-original-title="Eliminar "><i class="ti-close"></i>
+                                {{/if}}
+                                </td>
+                            </tr>
+                        {{else}}
+                          <tr>
+                              <td colspan="5">No hay usuarios para mostrar</td>
+                          </tr>
+                        {{/each}}                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('body').on('click', '.block', function (e) {
+        let userId = $(this).attr("data-user");
+        let isLocked = $(this).attr("data-block-status");
+        let lockStatus = 0;
+        let text = "";
+        if(isLocked == 0) {
+            lockStatus = 1;
+            text = "Quieres bloquear este usuario?";
+        } else {
+            lockStatus = 0;
+            text = "Quieres desbloquear este usuario?";
+        }
+        e.preventDefault();
+        Swal.fire({
+            title: text,
+            text: "Puede revertir el estado nuevamente más tarde.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si!',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    method: "post",
+                    url: "/dashboard/users/updateBlockStatus",
+                    data: {
+                        userId: userId,
+                        isLocked: lockStatus,
+                    },
+                    success: function (data) {
+                        if (data.success === true) {
+                            toastr.success(data.message, function () {
+                                setTimeout(function () {
+                                    window.location.href = '/dashboard/users';
+                                }, 2000);
+                            });
+                        } else {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function (data) {
+                        toastr.error('Technical Error');
+                    }
+                });
+            }
+        })
+
+    });
+    $('body').on('click', '.delete', function (e) {
+        let userId = $(this).attr("data-user");
+        e.preventDefault();
+        Swal.fire({
+            title: "Deseas eliminar este usuario?",
+            text: "No puedes deshacer esta acción",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si!'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    method: "post",
+                    url: "/dashboard/users/delete",
+                    data: {
+                        userId: userId,
+                    },
+                    success: function (data) {
+                        if (data.success === true) {
+                            toastr.success(data.message, function () {
+                                setTimeout(function () {
+                                    window.location.href = '/dashboard/users';
+                                }, 2000);
+                            });
+                        } else {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function (data) {
+                        toastr.error('Technical Error');
+                    }
+                });
+            }
+        })
+
+    });
+</script>
+{{/if}}

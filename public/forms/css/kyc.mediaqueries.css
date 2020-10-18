@@ -1,0 +1,70 @@
+/* Portrait */
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 667px) 
+  and (orientation: portrait) { 
+  	body {
+  		width: 100%;
+    	/*display: grid;*/
+  	}
+
+  	.sm-hide{
+  		display: inline-block;
+  	}
+
+  	.sm-steps{
+	    width: 95%;
+	    background: whitesmoke;
+	    padding: 10px;
+	    border-radius: 5px;
+	    box-shadow: 1px 1px 5px #ddd;
+	}
+
+	.slogan{
+		line-height: 10px
+	}
+
+	.default header {
+	    background: #656565;
+	    color: #fff;
+	    padding: 5px 0;
+	}
+
+	.sm-small-label{
+		font-size: 12px;
+    	margin-bottom: 5px;
+	}
+
+	.default .main-form {
+	    margin-top: 55px;
+	}
+
+  textarea{
+    width: 94%;
+  }
+
+  .signature-pad{
+    width: 90%;
+  }
+
+  	header {
+  		text-align: center;
+  	}
+
+  	#logo{
+  		width: 100px;
+	    margin: 0 0 0 115px;
+  	}
+
+  	.mdc-chip.mdc-ripple-upgraded,
+  	.demo-linear-progress-indicator{
+  		display: none;
+  	}
+  	.group input, .group textarea{
+  		width: 95%;
+  	}
+
+  	.normalize-top{
+  		margin-top: 10px 
+  	}
+}

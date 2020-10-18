@@ -1,0 +1,635 @@
+<style>
+    .keep-hidden {
+        display: none;
+    }
+
+    .switchery {
+        height: 32px !important;
+    }
+    /*.colorpicker.colorpicker-2x {*/
+    /*    width: 272px;*/
+    /*}*/
+
+    .colorpicker-2x .colorpicker-saturation {
+        width: 200px;
+        height: 200px;
+    }
+
+    .colorpicker-2x .colorpicker-hue,
+    .colorpicker-2x .colorpicker-alpha {
+        width: 30px;
+        height: 200px;
+    }
+
+    .colorpicker-2x .colorpicker-alpha,
+    .colorpicker-2x .colorpicker-preview {
+        background-size: 200px 200px;
+        background-position: 0 0, 10px 10px;
+    }
+
+    .colorpicker-2x .colorpicker-preview,
+    .colorpicker-2x .colorpicker-preview div {
+        height: 30px;
+        font-size: 16px;
+        line-height: 160%;
+    }
+
+    .colorpicker-saturation .colorpicker-guide {
+        height: 10px;
+        width: 10px;
+        border-radius: 10px;
+        margin: -5px 0 0 -5px;
+    }
+    .colorpicker-color div {
+        height: 25px !important;
+    }
+    .colorpicker-color {
+        height: 25px !important;
+    }
+    .colorpicker-alpha i, .colorpicker-hue i {
+        border-top: 2px solid #fff !important;
+    }
+</style>
+{{#if error}}
+    <div id="error" class="alert alert-danger" style="margin-top: 25px;">{{errMessage}}</div>
+{{/if}}
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">Crear Project</h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/dashboard/projects">Projects</a></li>
+                <li class="breadcrumb-item active">
+                    {{#if isEdit}}
+                        Editar Project
+                    {{else}}
+                        Crear Project
+                    {{/if}}
+                </li>
+            </ol>
+
+        </div>
+    </div>
+</div>
+<div class="col-lg-8 offset-md-2">
+    <div class="card">
+        <ul class="nav nav-tabs profile-tab" role="tablist">
+            <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#tabMainForm" id="navMainForm" role="tab" aria-selected="true">Main Project</a> </li>
+            <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tabProjectSetup" id="navProjectSetup" role="tab" aria-selected="false">Project Settings</a> </li>
+            <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tabProjectDetails" id="navProjectDetails" role="tab" aria-selected="false">Project Details</a> </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tabMainForm" role="tabpanel">
+                <div class="card-body">
+                    <div class="form-horizontal form-material" id="divMainForm">
+                        <div class="form-group">
+                            <label for="recipient-name" class="control-label">Organización:</label>
+                            <select class="select2-dropdown" name="organizationId" style="width: 60%" id="organization">
+
+                                {{#each initialInfo.orgList}}
+                                    <option value="{{id}}" {{isSelected id ../form.organizationId}}>{{name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="control-label">Nombre</label>
+                            <input type="text" class="form-control" id="name" name="name"
+                                   value="{{form.name}}"
+                                   required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description" class="control-label">Descripción:</label>
+                            <textarea class="form-control" id="description" name="description"
+                                      rows="3">{{form.description}}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="isActive" class="control-label">Activo:</label>
+                            {{#if isEdit}}
+                                <input type="checkbox" class="form-control js-switch" id="isActive" name="isActive" {{isChecked
+                                        form.isActive}}>
+                            {{else}}
+                                <input type="checkbox" class="form-control js-switch" id="isActive" name="isActive" checked>
+                            {{/if}}
+                        </div>
+                        <div class="form-group">
+                            <label for="isBlocked" class="control-label">Is Blocked:</label>
+                            <input type="checkbox" class="form-control js-switch" id="isBlocked" name="isBlocked" {{isChecked
+                                    form.isBlocked}}>
+                        </div>
+                        <div class="form-group">
+                            <label for="formType" class="control-label">Type:</label>
+                            <select class="select2-dropdown" name="formType" style="width: 50%" id="formType">
+                                <option value="">Select Type</option>
+                                <option value="kyc" {{isSelected "kyc" form.type}}>Know Your Customer</option>
+                                <option value="kyb" {{isSelected "kyb" form.type}}>Know Your Business</option>
+                                <option value="ac" {{isSelected "ac" form.type}}>Account Opening</option>
+                                <option value="cc" {{isSelected "cc" form.type}}>Disputes</option>
+                                <option value="co" {{isSelected "co" form.type}}>Credit Origination</option>
+                                <option value="ina" {{isSelected "ina" form.type}}>Insurance Affiliation</option>
+                                <option value="inq" {{isSelected "inq" form.type}}>Insurance Quote</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" id="btnMainForm" style="float: right">
+                                Continue to Setup
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="tabProjectSetup" role="tabpanel">
+                <div class="card-body">
+                    <div class="form-horizontal form-material" id="divProjectSetup">
+                        <div class="form-group">
+                            <label for="apiUrl" class="control-label">API URL</label>
+                            <input type="text" class="form-control" id="apiUrl" name="apiUrl"
+                                   value="{{formSettings.apiUrl}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="statisticUrl" class="control-label">Statistic URL</label>
+                            <input type="text" class="form-control" id="statisticUrl"
+                                   name="statisticUrl"
+                                   value="{{formSettings.statisticUrl}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="apiPort" class="control-label">API Port</label>
+                            <input type="text" class="form-control" id="apiPort" name="apiPort"
+                                   value="{{formSettings.apiPort}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="secretKey" class="control-label">Secret Key</label>
+                            <input type="text" class="form-control" id="secretKey" name="secretKey"
+                                   value="{{formSettings.secretKey}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="domainNamespace" class="control-label">Domain Namespace</label>
+                            <input type="text" class="form-control" id="domainNamespace"
+                                   name="domainNamespace"
+                                   value="{{formSettings.domainNamespace}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="isUnique" class="control-label">Unique</label>
+                            <input type="checkbox" class="form-control js-switch" id="isUnique" name="isUnique" {{isChecked
+                                    formSettings.isUnique}}>
+                        </div>
+                        <div class="form-group">
+                            <label for="hasExpiration" class="control-label">Expiration</label>
+                            <input type="checkbox" class="form-control js-switch" id="hasExpiration"
+                                   name="hasExpiration" {{isChecked formSettings.hasExpiration}}>
+                        </div>
+                        <div class="form-group keep-hidden" id="expirationTimeDiv">
+                            <label for="expirationTime" class="control-label">Expiration Time</label>
+                            <input type="text" class="form-control" id="expirationTime"
+                                   name="expirationTime" value="{{formSettings.expirationTime}}">
+                        </div>
+                        <div class="form-group keep-hidden" id="expirationTimeLabelDiv">
+                            <label for="expirationTimeLabel" class="control-label">Expiration Time Label</label>
+                            <input type="text" class="form-control" id="expirationTimeLabel"
+                                   name="expirationTimeLabel" value="{{formSettings.expirationTimeLabel}}">
+                        </div>
+                        <div class="form-group keep-hidden" id="expirationTriggerDiv">
+                            <label for="expirationTrigger" class="control-label">Expiration Trigger</label>
+                            <select class="select2-dropdown" name="expirationTrigger" style="width: 100%"
+                                    id="expirationTrigger">
+                                <option value="alEenviar" {{isSelected formSettings.expirationTrigger "alEenviar"}}>Al Enviar
+                                </option>
+                                <option value="alAbrir" {{isSelected formSettings.expirationTrigger "alAbrir"}}>Al Abrir
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="hasAuth" class="control-label">Auth</label>
+                            <select class="select2-dropdown" name="hasAuth" style="width: 100%" id="hasAuth">
+                                <option value="no" {{isSelected formSettings.hasAuth "no"}}>No</option>
+                                <option value="usernameAndPassword"  {{isSelected formSettings.hasAuth
+                                                                                  "usernameAndPassword"}}>Username and Password
+                                </option>
+                                <option value="secret" {{isSelected formSettings.expirationTrigger "secret"}}>Secret</option>
+                            </select>
+                        </div>
+                        <div class="form-group keep-hidden" id="secretPassDiv">
+                            <label for="secretPass" class="control-label">Secret Pass</label>
+                            <input type="text" class="form-control" id="secretPass" name="secretPass"
+                                   value="{{formSettings.secretPass}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="hasDoubleAuth" class="control-label">Double Auth</label>
+                            <input type="checkbox" class="form-control js-switch" id="hasDoubleAuth"
+                                   name="hasDoubleAuth" {{isChecked formSettings.hasDoubleAuth}}>
+                        </div>
+                        <div class="form-group">
+                            <label for="doubleAuthMethod" class="control-label">Double Auth Method</label>
+                            <select class="select2-dropdown" name="doubleAuthMethod" style="width: 100%" id="doubleAuthMethod">
+                                <option value="sms"  {{isSelected formSettings.doubleAuthMethod "sms"}}>SMS</option>
+                                <option value="email"  {{isSelected formSettings.doubleAuthMethod "email"}}>Email</option>
+                                <option value="both"  {{isSelected formSettings.doubleAuthMethod "both"}}>Both</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="hasFinishDate" class="control-label">Has Finish Date</label>
+                            <input type="checkbox" class="form-control js-switch" id="hasFinishDate"
+                                   name="hasFinishDate"  {{isChecked formSettings.hasFinishDate}}>
+                        </div>
+                        <div class="form-group keep-hidden" id="finishDateDiv">
+                            <label for="finishDate" class="control-label">Finish Date</label>
+                            <input type="text" class="form-control datepicker-here" id="finishDate"
+                                   name="finishDate"
+                                   value="{{formSettings.finishDate}}" data-date-format="yyyy-mm-dd">
+                        </div>
+                        <div class="form-group">
+                            <label for="emailNotification" class="control-label">Email Notification</label>
+                            <input type="text" class="form-control" id="emailNotification"
+                                   name="emailNotification"
+                                   value="{{formSettings.emailNotification}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNotification" class="control-label">Phone Notification</label>
+                            <input type="text" class="form-control" id="phoneNotification"
+                                   name="phoneNotification"
+                                   value="{{formSettings.phoneNotification}}">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" id="btnProjectSetup" style="float: right">
+                                Continue to Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="tabProjectDetails" role="tabpanel">
+                <div class="card-body">
+                    <div class="form-horizontal form-material" id="divProjectDetails">
+                        <div class="form-group">
+                            <label for="formStyle" class="control-label">Form Style</label>
+                            <input type="text" class="form-control" id="formStyle" name="formStyle"
+                                   value="{{formDetails.formStyle}}">
+                        </div>
+                        <div class="form-group">
+                            <center class="m-t-30"><img
+                                {{#if isEdit}}
+                                src="{{imageUrl}}"
+                                {{else}}
+                                src="/img/default-user-image.png"
+                                {{/if}}
+                                class="form-logo" id="form-logo" width="150">
+                                <h6 class="control-label m-t-10 text-uppercase">PROJECT LOGO</h6>
+                                <input style="margin-left: 5rem" id="uploadProjectLogo" accept=".jpg,.png,.jpeg" type="file"
+                                       name="uploadProjectLogo">
+                            </center>
+                            {{#if isEdit}}
+                                <input type="hidden" name="image" id="image" value="{{formDetails.logo}}">
+                            {{else}}
+                                <input type="hidden" name="image" id="image" value="">
+                            {{/if}}
+                        </div>
+                        <hr>
+                        <div class="form-group" id="primaryColorDiv" data-color="{{formDetails.primaryColor}}">
+                            <label for="primaryColor" class="control-label color-picker">Primary Color</label>
+                            <input type="text" class="form-control" id="primaryColor" name="primaryColor"
+                                   value="{{formDetails.primaryColor}}">
+                        </div>
+                        <div class="form-group" id="secondaryColorDiv" data-color="{{formDetails.secundaryColor}}">
+                            <label for="secundaryColor" class="control-label color-picker">Secondary Color</label>
+                            <input type="text" class="form-control" id="secundaryColor" name="secundaryColor"
+                                   value="{{formDetails.secundaryColor}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="fontFamily" class="control-label">Font Family</label>
+                            <input type="text" class="form-control" id="fontFamily" name="fontFamily"
+                                   value="{{formDetails.fontFamily}}">
+                        </div>
+                        <div class="form-group"  id="fontColorDiv" data-color="{{formDetails.fontColor}}">
+                            <label for="fontColor" class="control-label color-picker">Font Color</label>
+                            <input type="text" class="form-control" id="fontColor" name="fontColor"
+                                   value="{{formDetails.fontColor}}">
+                        </div>
+                        <!--                <div class="form-group">-->
+                        <!--                    <label for="FontStyle" class="control-label">Font Style</label>-->
+                        <!--                    <input type="text" class="form-control" id="fontStyle" name="FontStyle"-->
+                        <!--                           value="{{formDetails.fontStyle}}">-->
+                        <!--                </div>-->
+                        <div class="form-group">
+                            <label for="showFooter" class="control-label">Show Footer</label>
+                            <input type="checkbox" class="form-control js-switch" id="showFooter" name="showFooter"  {{isChecked
+                                    formDetails.showFooter}}>
+                        </div>
+                        <div class="form-group">
+                            <label for="showHeader" class="control-label">Show Header</label>
+                            <input type="checkbox" class="form-control js-switch" id="showHeader" name="showHeader" {{isChecked
+                                    formDetails.showHeader}}>
+                        </div>
+                        <div class="form-group">
+                            <label for="showSignature" class="control-label">Show Signature</label>
+                            <input type="checkbox" class="form-control js-switch" id="showSignature"
+                                   name="showSignature" {{isChecked formDetails.showSignature}}>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" id="btnProjectDetails" style="float: right">
+                                Submit & Finish
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{#if isEdit}}
+                <input type="hidden" id="formId" value="{{form.formId}}" name="formId">
+                <input type="hidden" id="hasExpirationCheckedEdit" name="hasExpirationCheckedEdit"
+                       value="{{formSettings.hasExpiration}}">
+                <input type="hidden" id="hasFinishDateCheckedEdit" name="hasFinishDateCheckedEdit"
+                       value="{{formSettings.hasFinishDate}}">
+            {{else}}
+                <input type="hidden" id="formId" value="" name="formId">
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            let reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('.form-logo').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $(document).ready(function () {
+        $('.js-switch').each(function () {
+            new Switchery($(this)[0], $(this).data());
+        });
+        $(".select2-dropdown").select2({
+            placeholder: "Select Organizations"
+        });
+
+        {{#unless isEdit}}
+            $("#navProjectSetup").hide();
+            $("#navProjectDetails").hide();
+        {{/unless}}
+
+
+        $("#hasExpiration").on("change", function () {
+            $("#expirationTimeDiv").slideToggle(this.checked);
+            $("#expirationTimeLabelDiv").slideToggle(this.checked);
+            $("#expirationTriggerDiv").slideToggle(this.checked);
+        });
+        $("#hasFinishDate").on("change", function () {
+            $("#finishDateDiv").slideToggle(this.checked);
+        });
+
+        $("#hasAuth").on("change", function () {
+            let selected = $("#hasAuth").val();
+            if (selected === 'secret') {
+                $("#secretPassDiv").show(300);
+                $("#finishDateDiv").show(300);
+            } else {
+                $("#secretPassDiv").hide(300);
+                $("#finishDateDiv").hide(300);
+            }
+        });
+
+        // if ($("#divProjectSetup").is(':visible')) {
+        //     if ($("#hasExpirationCheckedEdit").val() == 1) {
+        //         console.log('change triggered');
+        //         $("#hasExpiration").trigger('change');
+        //     }
+        // }
+
+
+        $("#btnMainForm").click(function (e) {
+            e.preventDefault();
+            $(this).prop('disabled', true);
+            {{#unless isEdit}}
+                $(this).hide();
+            {{/unless}}
+
+
+            $.ajax({
+                method: "{{method}}",
+                url: "/dashboard/projects/{{action}}",
+                data: {
+                    organizationId: $("#organization").val(),
+                    name: $("#name").val(),
+                    description: $("#description").val(),
+                    isActive: $("#isActive").prop('checked') ? 1 : 0,
+                    isBlocked: $("#isBlocked").prop('checked') ? 1 : 0,
+                    type: $("#formType").val(),
+                    formId: $("#formId").val()
+                },
+                success: function (data) {
+                    if (data.success === true) {
+                        {{#unless isEdit}}
+                            $("#formId").val(data.formDetails.formId);
+                        {{/unless}}
+                        toastr.success(data.message, function () {
+                            setTimeout(function () {
+                                $("#navMainForm").removeClass('active');
+                                $('.profile-tab a[href="#tabProjectSetup"]').tab('show');
+                                $("#navProjectSetup").addClass('active').show(300);
+                            }, 2000);
+                        });
+                    } else {
+                        if (data.errors && data.errors.length > 0) {
+                            let errors = data.errors;
+                            for (let i = 0; i < errors.length; i++) {
+                                toastr.error(errors[i].msg);
+                            }
+                        } else {
+                            toastr.error(data.message);
+                        }
+                        $('#btnMainForm').removeAttr('disabled');
+                    }
+                },
+                error: function (data) {
+                    toastr.error('Technical Error');
+                    $('#btnMainForm').removeAttr('disabled');
+                }
+            }).done(function () {
+                $('#btnMainForm').removeAttr('disabled');
+            }).fail(function () {
+                toastr.error('Request Failed');
+                $('#btnMainForm').removeAttr('disabled');
+            })
+
+        });
+        $("#btnProjectSetup").click(function (e) {
+            e.preventDefault();
+            $(this).prop('disabled', true);
+            {{#unless isEdit}}
+                $(this).hide();
+            {{/unless}}
+            $.ajax({
+                method: "{{method}}",
+                url: "/dashboard/projects/createOrUpdateProjectSetup",
+                data: {
+                    formId: $("#formId").val(),
+                    apiUrl: $("#apiUrl").val(),
+                    statisticUrl: $("#statisticUrl").val(),
+                    apiPort: $("#apiPort").val(),
+                    secretKey: $("#secretKey").val(),
+                    domainNamespace: $("#domainNamespace").val(),
+                    isUnique: $("#isUnique").prop('checked') ? 1 : 0,
+                    hasExpiration: $("#hasExpiration").prop('checked') ? 1 : 0,
+                    expirationTime: $("#expirationTime").val() !== '' ? $("#expirationTime").val() : '',
+                    expirationTimeLabel: $("#expirationTimeLabel").val() !== '' ? $("#expirationTimeLabel").val() : "",
+                    expirationTrigger: $("#expirationTrigger").val(),
+                    hasAuth: $("#hasAuth").val(),
+                    secretPass: $("#secretPass").val() !== "" ? $("#secretPass").val() : "",
+                    hasDoubleAuth: $("#hasDoubleAuth").prop('checked') ? 1 : 0,
+                    doubleAuthMethod: $("#doubleAuthMethod").val(),
+                    hasFinishDate: $("#hasFinishDate").prop('checked') ? 1 : 0,
+                    finishDate: $('#finishDate').val() !== "" ? $('#finishDate').val() : "",
+                    emailNotification: $("#emailNotification").val(),
+                    phoneNotification: $("#phoneNotification").val()
+                },
+                success: function (data) {
+                    if (data.success === true) {
+                        toastr.success(data.message, function () {
+                            setTimeout(function () {
+                                $("#navProjectSetup").removeClass('active');
+                                $('.profile-tab a[href="#tabProjectDetails"]').tab('show');
+                                $("#navProjectDetails").addClass('active').show(300);
+                            }, 2000);
+                        });
+                    } else {
+                        if (data.errors && data.errors.length > 0) {
+                            let errors = data.errors;
+                            for (let i = 0; i < errors.length; i++) {
+                                toastr.error(errors[i].msg);
+                            }
+                        } else {
+                            toastr.error(data.message);
+                        }
+                        $('#btnProjectSetup').removeAttr('disabled');
+                    }
+                },
+                error: function (data) {
+                    toastr.error('Technical Error');
+                    $('#btnProjectSetup').removeAttr('disabled');
+                }
+            }).done(function () {
+                $('#btnProjectSetup').removeAttr('disabled');
+            }).fail(function () {
+                toastr.error('Request Failed');
+                $('#btnProjectSetup').removeAttr('disabled');
+            })
+
+        });
+
+        $("#btnProjectDetails").click(function (e) {
+            e.preventDefault();
+            $(this).prop('disabled', true);
+
+            $.ajax({
+                method: "{{method}}",
+                url: "/dashboard/projects/createOrUpdateProjectDetails",
+                data: {
+                    formId: $("#formId").val(),
+                    formStyle: $("#formStyle").val(),
+                    logo: $("#image").val(),
+                    primaryColor: $("#primaryColor").val(),
+                    secundaryColor: $("#secundaryColor").val(),
+                    fontFamily: $("#fontFamily").val(),
+                    fontColor: $("#fontColor").val(),
+                    // fontStyle: $("#fontStyle").val(),
+                    showFooter: $("#showFooter").prop('checked') ? 1 : 0,
+                    showHeader: $("#showHeader").prop('checked') ? 1 : 0,
+                    showSignature: $("#showSignature").prop('checked') ? 1 : 0,
+                },
+                success: function (data) {
+                    if (data.success === true) {
+                        toastr.success(data.message, function () {
+                            setTimeout(function () {
+                                window.location.href = '/dashboard/projects';
+                            }, 2000);
+                        });
+                    } else {
+                        if (data.errors && data.errors.length > 0) {
+                            let errors = data.errors;
+                            for (let i = 0; i < errors.length; i++) {
+                                toastr.error(errors[i].msg);
+                            }
+                        } else {
+                            toastr.error(data.message);
+                        }
+                        $('#btnProjectDetails').removeAttr('disabled');
+                    }
+                },
+                error: function (data) {
+                    toastr.error('Technical Error');
+                    $('#btnProjectDetails').removeAttr('disabled');
+                }
+            }).done(function () {
+                $('#btnProjectDetails').removeAttr('disabled');
+            }).fail(function () {
+                toastr.error('Request Failed');
+                $('#btnProjectDetails').removeAttr('disabled');
+            })
+
+        });
+
+        {{#if isEdit}}
+            $('#organization').hide();
+            $('#organization').val('{{form.organizationId}}');
+            $('#organization').show();
+        {{/if}}
+
+        $('#finishDate').datepicker({
+            language: 'en',
+            minDate: new Date(),
+            dateFormat: 'yy-mm-dd'
+        });
+        $("#uploadProjectLogo").change(function () {
+            readURL(this);
+            let data = new FormData();
+            let projectId = $("#formId").val();
+            let name = $("#name").val().replace(/[^A-Z0-9]+/ig, "_").toLowerCase()
+            data.append('projectId',projectId);
+            $.each($('#uploadProjectLogo')[0].files, function (i, file) {
+                data.append('logo_'+name, file);
+            });
+            $.ajax({
+                url: '/dashboard/projects/uploadProjectLogo',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                success: function (data) {
+                    if (data.success === true) {
+                        toastr.success(data.message, function () {
+                            let str = data.files.path;
+                            str = str.substring(str.indexOf("/uploads") + 1)
+                            if (data.files.filename != '') {
+                                $("#image").val("/" +str);
+                            }
+                        });
+                    }
+                }
+            });
+        });
+        $('#primaryColorDiv, #secondaryColorDiv , #fontColorDiv').colorpicker({
+            inline: true,
+            container: true,
+            customClass: 'colorpicker-2x',
+            sliders: {
+                saturation: {
+                    maxLeft: 200,
+                    maxTop: 200
+                },
+                hue: {
+                    maxTop: 200
+                },
+                alpha: {
+                    maxTop: 200
+                }
+            }
+        });
+    });
+</script>

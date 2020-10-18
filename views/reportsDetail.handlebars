@@ -1,0 +1,179 @@
+<style >
+    .center-div{
+        width: 600px;
+        background: #fff;
+        margin: 50px auto;
+        padding: 20px;
+    }
+    .error{
+        color:red !important;
+    }
+
+    .table-actions{
+        font-size: 16px;
+        color: #333;
+        margin: 0 5px;
+    }
+</style>
+{{#if reportNotExists}}
+    <div id="error" class="alert alert-danger" style="margin-top: 25px;">El reporte seleccionado no existe para este proceso</div>
+{{else}}
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">Reportes</h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Reportes</li>
+            </ol>
+            
+        </div>
+    </div>
+</div>
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title"> {{projectName}} </h4>
+            <h6 class="card-subtitle">{{parseStatus status}}</h6>            
+            <hr>
+            {{!-- <form class="form-inline">
+                    <div class="form-group mb-2">
+                        <label for="datepickerFrom" class="sr-only">Desde</label>
+                        <input type="text" id="datepickerFrom" placeholder="Desde" name="datepickerFrom" class="form-control" value={{from}} /> 
+                    </div>
+                     <div class="form-group mb-2" style="margin-left: 10px">
+                         <label for="datepickerTo" class="sr-only">hasta</label>
+                         <input type="text" id="datepickerTo" placeholder="Hasta" name="datepickerTo" class="form-control"value={{to}} />
+                   </div>
+                    <button type="button" class="btn btn-secondary mb-2" id="searchDates" style="margin-left:10px">Buscar</button>                 
+            </form> --}}
+
+            <!-- <h6 class="card-subtitle">Add class <code>.color-table .dark-table</code></h6> -->
+            <div class="table-responsive">
+                <table class="table color-table dark-table" id="report-table">
+                    <thead>
+                        <tr>                      
+                            <th>Nombre</th>
+                            <th>Cédula</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Última visualización</th>
+                            {{!-- <th>Encargado</th> --}}
+                            <th>Estado</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>                       
+                        {{#each data}}
+                            <tr>
+                                <td>{{name}} {{lastname}}</td>
+                                <td>{{idNumber}}</td>
+                                <td>{{email}}</td>
+                                <td>{{cellPhone}}</td>
+                                <td>{{parse_dateSS metadata.latestSeen}}</td>
+                                {{!-- <td>{{{parseOwner userEmail}}}</td> --}}
+                                <td>{{parseStatus status}}</td>
+                                <td>
+                                    <a href="/kyc/{{../org}}/{{../projectId}}/{{carisId}}/{{idNumber}}/view" class="btn ">
+                                        <i class="ti ti-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {{else}}
+                            <tr>
+                                <td colspan="7">No hay formularios para mostrar</td>
+                            </tr>
+                        {{/each}}                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        
+        var dateFormat = "dd-mm-yy",
+        from = $("#datepickerFrom")
+        .datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            dateFormat: dateFormat
+        })
+        .on("change", function() {
+            var toMinDate = getDate(this);
+            toMinDate.setDate(toMinDate.getDate() + 1);
+            to.datepicker("option", "minDate", toMinDate);
+        }),
+
+        to = $("#datepickerTo").datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            dateFormat: dateFormat,
+            minDate: new Date(),
+        })
+        .on("change", function() {
+            var fromMaxDate = getDate(this);
+            fromMaxDate.setDate(fromMaxDate.getDate() - 1);
+            from.datepicker("option", "maxDate", fromMaxDate);
+        });
+
+        function isValidDate(s) {
+            var bits = s.split('-');
+            var d = new Date(bits[1] + '/' + bits[0] + '/' + bits[2]);
+            var month = d.getMonth()+1;
+            
+            var nBits1 = Number(bits[0]);
+            var nBits2 =  Number(bits[1]);
+            return d && d.getDate() == nBits1 && month == nBits2;
+        }
+
+        function getDate(element) {
+            var date;
+            try {
+                date = $.datepicker.parseDate(dateFormat, element.value);
+            } catch (error) {
+                date = null;
+            }
+
+            return date;
+        }
+    
+        $('#searchDates').on('click', function(e){
+            var from = $("#datepickerFrom").val();
+            var to = $("#datepickerTo").val();
+            
+            var fromValid = isValidDate(from);            
+            var toValid = isValidDate(to);
+            
+            if(!fromValid || !toValid){
+                swal({
+                    title: "Error!",
+                    text: "Fechas invalidas"
+                });
+            }else{
+                var url = window.location.href.split('?')[0]+'?from='+from+'&to='+to;            
+                location.href = url;
+            }
+            
+        })
+
+
+        $('#report-table').DataTable( {
+            dom: 'Bfrtip',
+            language: {
+                "url": "/dist/js/dataTable.es.json"
+            },
+            buttons: [
+                'csv', 'excel', 'pdf'
+            ],
+            "pageLength": 50
+        } );
+    } );
+</script>
+{{/if}}
