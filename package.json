@@ -34,7 +34,7 @@
     "formiojs": "^4.8.0-rc.14",
     "js2xmlparser": "^4.0.0",
     "jsontoxml": "^1.0.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "4.17.11",
     "moment": "2.24.0",
     "mongoose": "5.4.10",
